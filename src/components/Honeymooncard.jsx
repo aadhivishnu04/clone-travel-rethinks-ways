@@ -1,0 +1,195 @@
+import React, { useState } from "react";
+import { FaRegBookmark, FaBookmark } from "react-icons/fa";
+import card1 from "../assets/card1.webp";
+import card2 from "../assets/card2.webp";
+import card3 from "../assets/card3.webp";
+import card4 from "../assets/card4.jpg";
+import card5 from "../assets/card5.webp";
+import card6 from "../assets/card6.jpg";
+
+const sections = [
+{
+title:"World Honeymoon Exclusive 2026",
+tag:"GLOBAL",
+tagLink:"https://travel.rethinkways.com/category/honeymoon-global/",
+posts:[
+{
+title:"Valentine's Travel 2026 – Romantic Getaways | Travel...",
+image:card1,
+link:"https://travel.rethinkways.com/top-romantic-couples-destinations-2026/",
+bg:"#cfe7e1",
+btn:"#3f5b54"
+},
+{
+title:"Bali Honeymoon: Love Woven in Waves Travel...",
+image:card2,
+link:"https://travel.rethinkways.com/bali-honeymoon/",
+bg:"#e7d2ea",
+btn:"#4b3346"
+},
+{
+title:"Maldives Honeymoon Guide: Dreamy Escapes for Couple...",
+image:card3,
+link:"https://travel.rethinkways.com/maldives-honeymoon/",
+bg:"#efcaa7",
+btn:"#6a4532"
+}
+]
+},
+{
+title:"Exclusive India Honeymoon 2026",
+tag:"INDIA",
+tagLink:"https://travel.rethinkways.com/category/honeymoon-india/",
+posts:[
+{
+title:"Best Honeymoon Destinations in India by 2026 Guide...",
+image:card4,
+link:"https://travel.rethinkways.com/best-honeymoon-destinations-in-india-2026/",
+bg:"#f0c7c9",
+btn:"#4b3340"
+},
+{
+title:"Love in Every Glow: India's Candlelight Dining Spots...",
+image:card5,
+link:"https://travel.rethinkways.com/candlelight-dining",
+bg:"#f1e0a6",
+btn:"#6b442d"
+},
+{
+title:"India's Enchanting Honeymoon 2026 | Travel...",
+image:card6,
+link:"https://travel.rethinkways.com/honeymoon-destinations-2026/",
+bg:"#cfe3ea",
+btn:"#92a8adff"
+}
+]
+}
+];
+
+export default function HoneymoonSection(){
+
+const [bookmarks,setBookmarks]=useState({})
+
+const toggle=(id)=>{
+setBookmarks(prev=>({...prev,[id]:!prev[id]}))
+}
+
+return(
+
+<div style={{fontFamily:"Poppins"}} className="w-full max-w-[436px] sm:max-w-[1320px] mx-auto px-4 mt-[40px] sm:mt-[60px] space-y-[40px]">
+
+{sections.map((section,sIndex)=>(
+
+<div key={sIndex}>
+
+{/* HEADER */}
+<div className="flex items-center justify-between mb-[24px]">
+
+<div className="flex items-center gap-[10px]">
+<span className="w-[3px] h-[24px] md:h-[30px] bg-red-600"/>
+<h2 className="text-[18px] sm:text-[28px] md:text-[36px]">{section.title}</h2>
+</div>
+
+<button className="group flex items-center gap-2 w-[36px] h-[36px] md:w-auto md:px-[18px] md:py-[8px] rounded-full bg-red-600 text-white hover:bg-black transition">
+<span className="hidden md:inline">VIEW ALL</span>
+<span className="rotate-[-45deg] group-hover:rotate-0 transition">→</span>
+</button>
+
+</div>
+
+{/* CARDS */}
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[22px]">
+
+{section.posts.map((post,i)=>{
+
+const id=`${sIndex}-${i}`
+
+return(
+
+<div key={id} style={{background:post.bg}} className="rounded-[20px] p-[16px] group">
+
+{/* IMAGE */}
+<div className="relative">
+
+<a href={post.link}>
+<img
+src={post.image}
+className="w-full h-[210px] sm:h-[300px] md:h-[375px] object-cover rounded-[12px]"
+/>
+</a>
+
+{/* BOOKMARK */}
+<button
+onClick={(e)=>{
+e.preventDefault()
+e.stopPropagation()
+toggle(id)
+}}
+className="absolute top-[8px] right-[8px] w-[32px] h-[32px] flex items-center justify-center bg-white rounded-full shadow-md"
+>
+{bookmarks[id]
+? <FaBookmark className="text-red-600 text-[14px]"/>
+: <FaRegBookmark className="text-red-600 text-[14px]"/>
+}
+</button>
+
+{/* TAG LINK */}
+<a href={section.tagLink}>
+<span
+className="absolute top-[0px] left-[10px] text-[10px] px-[8px] py-[3px] text-white rounded-sm uppercase"
+style={{background:post.btn,opacity:0.85}}
+>
+HONEYMOON {section.tag}
+</span>
+</a>
+
+{/* MOBILE BUTTON */}
+<a
+href={post.link}
+className="absolute bottom-[20px] md:hidden right-4 flex items-center gap-2 px-[14px] py-[6px] rounded-full border border-white text-white text-[12px]"
+style={{background:post.btn}}
+>
+READ MORE →
+</a>
+
+</div>
+
+{/* TITLE */}
+<a href={post.link}>
+<h3 className="mt-[18px] text-[16px] sm:text-[20px] md:text-[22px]" style={{fontFamily:"Yeseva One"}}>
+{post.title}
+</h3>
+</a>
+
+{/* DESKTOP BUTTON */}
+<a href={post.link}>
+<div
+className="hidden md:flex mt-[18px] ml-auto relative items-center h-[44px] w-[44px] rounded-full text-white overflow-hidden transition-all duration-[650ms] group-hover:w-[150px]"
+style={{background:post.btn}}
+>
+
+<span className="flex items-center justify-center w-[44px] h-[44px] text-[14px]">→</span>
+
+<span className="absolute left-[52px] whitespace-nowrap text-[13px] font-semibold opacity-0 -translate-x-[10px] transition-all duration-[650ms] delay-[40ms] group-hover:opacity-100 group-hover:translate-x-0">
+READ MORE
+</span>
+
+</div>
+</a>
+
+</div>
+
+)
+
+})}
+
+</div>
+
+</div>
+
+))}
+
+</div>
+
+)
+}
