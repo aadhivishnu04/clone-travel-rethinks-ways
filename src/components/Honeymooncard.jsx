@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { FaRegBookmark, FaBookmark } from "react-icons/fa";
+import arrow from "../assets/Travel_arrow.svg";
+
 import card1 from "../assets/card1.webp";
 import card2 from "../assets/card2.webp";
 import card3 from "../assets/card3.webp";
@@ -14,26 +16,31 @@ tag:"GLOBAL",
 tagLink:"https://travel.rethinkways.com/category/honeymoon-global/",
 posts:[
 {
-title:"Valentine's Travel 2026 – Romantic Getaways | Travel...",
-image:card1,
-link:"https://travel.rethinkways.com/top-romantic-couples-destinations-2026/",
-bg:"#cfe7e1",
-btn:"#3f5b54"
-},
-{
+
 title:"Bali Honeymoon: Love Woven in Waves Travel...",
 image:card2,
 link:"https://travel.rethinkways.com/bali-honeymoon/",
 bg:"#e7d2ea",
-btn:"#4b3346"
+btn:"#4b3346",
+focal:"50% 50%" // centered
+},
+{
+title:"Valentine's Travel 2026 – Romantic Getaways | Travel...",
+image:card1,
+link:"https://travel.rethinkways.com/top-romantic-couples-destinations-2026/",
+bg:"#cfe7e1",
+btn:"#3f5b54",
+focal:"75% 55%"
 },
 {
 title:"Maldives Honeymoon Guide: Dreamy Escapes for Couple...",
 image:card3,
 link:"https://travel.rethinkways.com/maldives-honeymoon/",
 bg:"#efcaa7",
-btn:"#6a4532"
+btn:"#6a4532",
+focal:"70% 65%"
 }
+
 ]
 },
 {
@@ -76,7 +83,7 @@ setBookmarks(prev=>({...prev,[id]:!prev[id]}))
 
 return(
 
-<div style={{fontFamily:"Poppins"}} className="w-full max-w-[436px] sm:max-w-[1320px] mx-auto px-4 mt-[40px] sm:mt-[60px] space-y-[40px]">
+<div style={{fontFamily:"Poppins"}} className="w-full max-w-[436px] sm:max-w-[1320px] mx-auto px-4   space-y-[40px]">
 
 {sections.map((section,sIndex)=>(
 
@@ -90,11 +97,19 @@ return(
 <h2 className="text-[18px] sm:text-[28px] md:text-[36px]">{section.title}</h2>
 </div>
 
-<button className="group flex items-center gap-2 w-[36px] h-[36px] md:w-auto md:px-[18px] md:py-[8px] rounded-full bg-red-600 text-white hover:bg-black transition">
-<span className="hidden md:inline">VIEW ALL</span>
-<span className="rotate-[-45deg] group-hover:rotate-0 transition">→</span>
-</button>
+<button className="group flex items-center justify-center gap-2 w-[36px] h-[36px] md:w-[148px] md:h-[44px] rounded-full bg-red-600 text-white text-[11px] md:text-[14px] font-semibold border-2 border-red-600 hover:bg-black hover:border-red-600 transition-all duration-300">
 
+  {/* TEXT */}
+  <span className="hidden md:inline">VIEW ALL</span>
+
+  {/* ICON */}
+  <img 
+    src={arrow}
+    alt="Arrow"
+    className="w-[14px] h-[14px] md:w-[16px] md:h-[16px] transition-all duration-500 ease-out rotate-[-45deg] group-hover:rotate-0 group-hover:translate-x-[3px]"
+  />
+
+</button>
 </div>
 
 {/* CARDS */}
@@ -113,8 +128,9 @@ return(
 
 <a href={post.link}>
 <img
-src={post.image}
-className="w-full h-[210px] sm:h-[300px] md:h-[375px] object-cover rounded-[12px]"
+  src={post.image}
+  className="w-full h-[210px] sm:h-[300px] md:h-[375px] rounded-[12px] object-cover"
+  style={{ objectPosition: post.focal || "center" }}
 />
 </a>
 
@@ -133,10 +149,10 @@ className="absolute top-[8px] right-[8px] w-[32px] h-[32px] flex items-center ju
 }
 </button>
 
-{/* TAG LINK */}
+{/* TAG */}
 <a href={section.tagLink}>
 <span
-className="absolute top-[0px] left-[10px] text-[10px] px-[8px] py-[3px] text-white rounded-sm uppercase"
+className="absolute top-[0px] md:left-10 text-[10px] px-[8px] py-[3px] text-white uppercase"
 style={{background:post.btn,opacity:0.85}}
 >
 HONEYMOON {section.tag}
@@ -149,16 +165,21 @@ href={post.link}
 className="absolute bottom-[20px] md:hidden right-4 flex items-center gap-2 px-[14px] py-[6px] rounded-full border border-white text-white text-[12px]"
 style={{background:post.btn}}
 >
-READ MORE →
+READ MORE
+<img 
+  src={arrow}
+  alt="Arrow"
+  className="w-[14px] h-[14px] rotate-[-45deg]"
+/>
 </a>
 
 </div>
 
 {/* TITLE */}
 <a href={post.link}>
-<h3 className="mt-[18px] text-[16px] sm:text-[20px] md:text-[22px]" style={{fontFamily:"Yeseva One"}}>
+<h4 className="mt-[18px] text-[16px] sm:text-[20px] md:text-[22px]" style={{fontFamily:"Yeseva One"}}>
 {post.title}
-</h3>
+</h4>
 </a>
 
 {/* DESKTOP BUTTON */}
@@ -168,7 +189,13 @@ className="hidden md:flex mt-[18px] ml-auto relative items-center h-[44px] w-[44
 style={{background:post.btn}}
 >
 
-<span className="flex items-center justify-center w-[44px] h-[44px] text-[14px]">→</span>
+<span className="flex items-center justify-center w-[44px] h-[44px]">
+  <img 
+    src={arrow}
+    alt="Arrow"
+    className="w-[20px] h-[20px] transition-all duration-500 ease-out rotate-[-45deg] group-hover:rotate-0 group-hover:translate-x-[3px]"
+  />
+</span>
 
 <span className="absolute left-[52px] whitespace-nowrap text-[13px] font-semibold opacity-0 -translate-x-[10px] transition-all duration-[650ms] delay-[40ms] group-hover:opacity-100 group-hover:translate-x-0">
 READ MORE

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import brandImage from "../assets/brandstory@.jpg";
 import brandImageMobile from "../assets/mobile.jpeg";
+import arrow from "../assets/Travel_arrow.svg"; // ✅ ADD
 import { FaRegBookmark, FaBookmark } from "react-icons/fa";
 
 export default function BrandStory() {
@@ -12,7 +13,7 @@ const tagLink = "https://travel.rethinkways.com/category/brand-story/";
 
 return (
 
-<section className="max-w-[1320px] mx-auto mt-[40px] md:mt-[60px] px-4 lg:px-0">
+<section className="w-full md:max-w-[1320px] mx-auto  px-0 md:px-4">
 
 {/* Header */}
 <div className="flex items-center justify-between mb-6 md:mb-10">
@@ -25,16 +26,20 @@ Brand Story
 </h2>
 </div>
 
-<button className="group w-[36px] h-[36px] md:w-auto md:h-auto flex items-center justify-center md:gap-2 px-0 md:px-[20px] py-0 md:py-[9px] text-[11px] md:text-[13px] font-semibold rounded-full bg-red-600 text-white border-2 border-red-600 hover:bg-black transition-all duration-300">
+{/* ✅ VIEW ALL FIXED */}
+<button className="group flex items-center justify-center gap-2 w-[36px] h-[36px] md:w-[148px] md:h-[44px] rounded-full bg-red-600 text-white text-[11px] md:text-[14px] font-semibold border-2 border-red-600 hover:bg-black hover:border-red-600 transition-all duration-300">
 
-<span className="hidden md:inline">VIEW ALL</span>
+  {/* TEXT */}
+  <span className="hidden md:inline">VIEW ALL</span>
 
-<span className="rotate-[-45deg] group-hover:rotate-0 transition-transform duration-300">
-→
-</span>
+  {/* ICON */}
+  <img 
+    src={arrow}
+    alt="Arrow"
+    className="w-[14px] h-[14px] md:w-[16px] md:h-[16px] transition-all duration-500 ease-out rotate-[-45deg] group-hover:rotate-0 group-hover:translate-x-[3px]"
+  />
 
 </button>
-
 </div>
 
 
@@ -60,13 +65,11 @@ className="block md:hidden w-full rounded-md"
 </a>
 
 
-{/* TAG WITH LINK */}
+{/* TAG */}
 <a href={tagLink}>
-
-<span className="absolute top-[0px] left-[10px] md:left-[42px] bg-red-600 text-white text-[10px] md:text-[11px] px-2 md:px-3 py-1 uppercase font-semibold">
+<span className="absolute top-[0px] left-[10px] md:left-18 bg-red-600 text-white text-[10px] md:text-[11px] px-2 md:px-3 py-1 uppercase font-semibold">
 BRAND STORY
 </span>
-
 </a>
 
 
@@ -77,7 +80,7 @@ e.preventDefault()
 e.stopPropagation()
 setBookmark(!bookmark)
 }}
-className="absolute top-[10px] right-[10px] md:top-[15px] md:right-[20px] bg-white w-[30px] h-[30px] md:w-[36px] md:h-[36px] rounded-full flex items-center justify-center shadow cursor-pointer"
+className="absolute top-[10px] right-[10px] md:top-4 md:right-4 bg-white w-[30px] h-[30px] md:w-[36px] md:h-[36px] rounded-full flex items-center justify-center shadow cursor-pointer"
 >
 
 {bookmark ? (
@@ -89,14 +92,18 @@ className="absolute top-[10px] right-[10px] md:top-[15px] md:right-[20px] bg-whi
 </div>
 
 
-{/* MOBILE READ MORE */}
+{/* ✅ MOBILE BUTTON FIXED */}
 <a
 href={link}
 className="absolute bottom-[20px] md:hidden right-4 flex items-center gap-2 px-[14px] py-[6px] rounded-full border border-white/70 text-white text-[12px] bg-red-600 hover:bg-[#4a2f4a] transition"
 >
 
 READ MORE
-<span className="-rotate-[35deg]">→</span>
+<img 
+  src={arrow}
+  alt="Arrow"
+  className="w-[14px] h-[14px] rotate-[-45deg]"
+/>
 
 </a>
 
@@ -114,20 +121,24 @@ Specialist in South India | Travel Rethink Ways
 </a>
 
 
-{/* DESKTOP BUTTON */}
+{/* ✅ DESKTOP BUTTON FIXED */}
 <a href={link}>
 
-<div className="mt-5 relative flex items-center h-[44px] w-[44px] rounded-full bg-red-600 text-white overflow-hidden transition-all duration-[650ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:w-[150px]">
+  <div className="mt-5 relative flex items-center h-[44px] w-[44px] rounded-full bg-red-600 border-2 border-red-600 text-white overflow-hidden transition-all duration-[650ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:w-[150px] group-hover:bg-black group-hover:border-red-600">
 
-<span className="flex items-center justify-center w-[44px] h-[44px] text-[14px]">
-→
-</span>
+    <span className="flex items-center justify-center w-[44px] h-[44px]">
+      <img 
+        src={arrow}
+        alt="Arrow"
+        className="w-[20px] h-[20px] transition-all duration-500 ease-out rotate-[-45deg] group-hover:rotate-0 group-hover:translate-x-[3px]"
+      />
+    </span>
 
-<span className="absolute left-[52px] whitespace-nowrap text-[14px] font-semibold opacity-0 -translate-x-[10px] transition-all duration-[650ms] delay-[40ms] group-hover:opacity-100 group-hover:translate-x-0">
-READ MORE
-</span>
+    <span className="absolute left-[52px] whitespace-nowrap text-[14px] font-semibold opacity-0 -translate-x-[10px] transition-all duration-[650ms] delay-[40ms] group-hover:opacity-100 group-hover:translate-x-0">
+      READ MORE
+    </span>
 
-</div>
+  </div>
 
 </a>
 

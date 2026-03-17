@@ -4,7 +4,7 @@ import Banner from "./components/Banner";
 import Tags from "./components/Tags";
 import Honeymooncard from "./components/Honeymooncard";
 
-import AdBanner from "./components/Ad";
+
 import Brandstory from "./components/Brandstory";
  
 import Month from "./components/Month";
@@ -25,34 +25,21 @@ import Footer from "./components/Footer"
 
 function App() {
   return (
-    <div>
+    <div className="space-y-8 md:space-y-10">"
       <Header/>
       <Banner />
-      
       <Tags />
       <LatestUpdates/>
-    
-      {/* <AdBanner /> */}
-      <Honeymooncard />
-    
-      <Brandstory />
-      
+    <Honeymooncard />
+    <Brandstory />
       <Month/>
-  
-      <Visacard/>
-    
-      <UniqueStayStories/>
-       
-      <AroundTheWorld/>
+  <Visacard/>
+    <UniqueStayStories/>
+       <AroundTheWorld/>
       <VisaFreeEscapes/>
-      
       <TravelMood/>
       <Footer/>
-       {/* <AdBanner />
-       <AdBanner />
-       <AdBanner />
-       <AdBanner />
-       <AdBanner /> */}
+       
     </div>
   );
 }

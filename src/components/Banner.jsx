@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaRegBookmark, FaBookmark } from "react-icons/fa";
+import arrow from "../assets/Travel_arrow.svg";
 
 const slides = [
   {
@@ -11,7 +12,7 @@ const slides = [
   },
   {
     image: "https://travel.rethinkways.com/wp-content/uploads/2025/11/rethinkways-blog-visa-free-destination-cover-1140x540.jpg",
-    title: "Top 10 Exotic VISA Free Honeymoon Destinations for Indians 2026 Romantic Travel Guide | Travel Rethink Ways",
+    title: "Top 10 Exotic VISA Free Honeymoon Destinations | Travel Rethink Ways",
     tag: "VISA FREE",
     link: "https://travel.rethinkways.com/top-10-visa-free-honeymoon-destinations/",
     tagLink: "https://travel.rethinkways.com/category/visa-free/"
@@ -39,7 +40,7 @@ export default function Banner() {
   const { title, tag, link, tagLink } = slides[active];
 
   return (
-    <div className="w-full max-w-[420px] sm:max-w-[1368px] mx-auto px-0 sm:px-4 lg:px-6 md:mt-[30px] lg:mt-[40px]">
+    <div className="w-full max-w-[420px] sm:max-w-[1368px] mx-auto px-0 sm:px-4 lg:px-6  lg:mt-[40px]">
 
       <div className="group relative w-full h-[380px] sm:h-[480px] md:h-[560px] lg:h-[540px] overflow-hidden rounded-none md:rounded-[16px] shadow-lg">
 
@@ -60,10 +61,10 @@ export default function Banner() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent md:hidden" />
         <div className="hidden md:block absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/0" />
 
-        {/* TAG WITH LINK */}
+        {/* TAG */}
         <a
           href={tagLink}
-          className="absolute top-0 left-4 md:left-10 bg-[#55364b] md:bg-red-600 text-white text-[10px] sm:text-[11px] font-semibold uppercase px-2 py-[3px] rounded-sm shadow z-20"
+          className="absolute top-0 left-4 md:left-10 bg-[#55364b] md:bg-red-600 text-white text-[10px] sm:text-[11px] font-semibold uppercase px-2 py-[3px] shadow z-20"
         >
           {tag}
         </a>
@@ -84,16 +85,30 @@ export default function Banner() {
         </div>
 
         {/* Desktop Read More */}
-        <a href={link} className="hidden md:block absolute right-10 bottom-12 group">
-          <div className="relative flex items-center h-[44px] w-[44px] rounded-full bg-[#D02525] text-white overflow-hidden transition-all duration-[600ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:w-[150px]">
-            <span className="flex items-center justify-center w-[44px] h-[44px] text-[14px]">→</span>
-            <span className="absolute left-[52px] whitespace-nowrap text-[14px] font-semibold opacity-0 -translate-x-[10px] transition-all duration-[600ms] group-hover:opacity-100 group-hover:translate-x-0">
-              READ MORE
-            </span>
-          </div>
-        </a>
+       <a
+  href={link}
+  className="hidden md:block absolute right-4 bottom-4 z-40 group"
+>
+  <div className="relative flex items-center h-[44px] w-[44px] rounded-full bg-[#D02525] border-2 border-[#D02525] text-white overflow-hidden transition-all duration-[600ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:w-[150px] group-hover:bg-black group-hover:border-[#D02525]">
 
-        {/* Desktop Dots */}
+    {/* ARROW */}
+    <span className="flex items-center justify-center w-[44px] h-[44px]">
+      <img 
+        src={arrow}
+        alt="Arrow"
+        className="w-[22px] h-[22px] transition-transform duration-500 ease-out rotate-[-45deg] group-hover:rotate-0"
+      />
+    </span>
+
+    {/* TEXT */}
+    <span className="absolute left-[52px] whitespace-nowrap text-[14px] font-semibold opacity-0 -translate-x-[10px] transition-all duration-[600ms] group-hover:opacity-100 group-hover:translate-x-0">
+      READ MORE
+    </span>
+
+  </div>
+</a>
+
+        {/* Dots */}
         <div className="hidden md:flex flex-col gap-3 absolute right-5 top-1/2 -translate-y-1/2 z-20">
           {slides.map((_, i) => (
             <button
@@ -106,7 +121,7 @@ export default function Banner() {
           ))}
         </div>
 
-        {/* Mobile Caption */}
+        {/* Mobile */}
         <div className="absolute bottom-0 left-0 w-full md:hidden bg-[#55364b] text-white px-4 pt-8 pb-6 z-20">
 
           <a

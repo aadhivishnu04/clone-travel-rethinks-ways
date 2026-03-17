@@ -40,19 +40,22 @@ const tags = [
   { icon: <FaTree />, text: "Parks", link: "https://travel.rethinkways.com/category/parks/", bg: "#eae6f9", color: "#47408a" },
   { icon: <FaLandmark />, text: "Wonders", link: "https://travel.rethinkways.com/category/world-wonders/", bg: "#e5e7ff", color: "#343c96" },
   { icon: <FaTheaterMasks />, text: "Festivals", link: "https://travel.rethinkways.com/category/festivals/", bg: "#f4e2f7", color: "#71367c" },
+
+  // ✅ Correct placement
   { icon: <FaCity />, text: "City Escapes", link: "https://travel.rethinkways.com/category/city/", bg: "#e9fff4", color: "#1f6e55" },
+  { icon: <FaWater />, text: "Waterfalls", link: "https://travel.rethinkways.com/category/waterfalls/", bg: "#ffe7eb", color: "#8A2f44" },
   { icon: <FaPaw />, text: "Wildlife", link: "https://travel.rethinkways.com/category/wildlife/", bg: "#dbfff6", color: "#146b5e" },
 ];
 
 export default function Tags() {
   return (
-    <div className="w-full max-w-[1350px] mx-auto px-4 mt-8 sm:mt-10 md:mt-12 flex flex-wrap justify-center sm:justify-start gap-[8px] sm:gap-[12px] md:gap-[14px] font-[Poppins]">
+    <div className="w-full max-w-[1350px] mx-auto px-4 mt-8   flex flex-wrap justify-center sm:justify-start gap-[8px] sm:gap-[12px] md:gap-[14px] font-[Poppins]">
 
       {tags.map(({ icon, text, bg, color, link }, i) => (
         <a key={i} href={link}>
           <div
             style={{ background: bg, color }}
-            className="flex items-center gap-[6px] sm:gap-[8px] px-[10px] py-[6px] sm:px-[12px] sm:py-[10px] rounded-[10px] text-[13px] sm:text-[16px] lg:text-[20px] font-medium cursor-pointer transition-all duration-200 hover:scale-105"
+            className="flex items-center gap-[6px] sm:gap-[8px] px-[10px] py-[6px] sm:px-[12px]  rounded-[10px] text-[13px] sm:text-[16px] lg:text-[20px] font-medium cursor-pointer"
           >
             <span className="text-[14px] sm:text-[16px]">{icon}</span>
             {text}

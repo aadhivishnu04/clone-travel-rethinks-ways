@@ -5,6 +5,7 @@ import north from "../assets/NORTH AMERICA.svg";
 import south from "../assets/SOUTH AMERICA.svg";
 import oceania from "../assets/OCEANIA.svg";
 import antarctica from "../assets/ANTARCTICA.svg";
+import arrow from "../assets/Travel_arrow.svg";
 
 const data = [
   { title: "ASIA", img: asia, color: "#66c5cc", link: "https://travel.rethinkways.com/category/asia/" },
@@ -20,7 +21,7 @@ const Card = ({ item, imgClass }) => (
   <a
     href={item.link}
     style={{ background: item.color }}
-    className="relative w-full rounded-[16px] flex items-center justify-center group h-[220px] md:h-[250px]"
+    className="relative w-full rounded-[16px] flex items-center justify-center group h-[220px] md:h-[340px]"
   >
     <img
       src={item.img}
@@ -28,10 +29,14 @@ const Card = ({ item, imgClass }) => (
       className={`object-contain scale-200 ${imgClass}`}
     />
 
-    <button className="absolute bottom-[15px] right-[15px] md:bottom-[20px] md:right-[20px] flex items-center gap-2 px-[16px] md:px-[18px] py-[7px] md:py-[8px] text-[12px] md:text-[13px] font-semibold text-white rounded-full border border-white/40 bg-black/30 backdrop-blur-md transition-all duration-300 group-hover:bg-black group-hover:border-red-500">
+    <button className="absolute bottom-[15px] right-[15px] md:bottom-[20px] md:right-[20px] flex items-center gap-2 px-[16px] md:px-[18px] h-[46px] text-[12px] md:text-[13px] font-semibold text-white rounded-full border border-white bg-black/30 backdrop-blur-md transition-all duration-300 group-hover:bg-black group-hover:border-red-500">
       {item.title}
-      <span className="rotate-[-45deg] transition-transform duration-300 group-hover:rotate-0">
-        →
+      <span className="flex items-center justify-center">
+        <img
+          src={arrow}
+          alt="arrow"
+          className="w-[14px] h-[14px] brightness-0 invert rotate-[-45deg] transition-all duration-300 group-hover:rotate-0 group-hover:translate-x-[2px]"
+        />
       </span>
     </button>
   </a>
@@ -39,43 +44,47 @@ const Card = ({ item, imgClass }) => (
 
 export default function AroundWorld() {
   return (
-    <section className="max-w-[1320px] mt-[40px] md:mt-[60px] mx-auto px-4">
+    <section className="w-full bg-white">
+      <div className="max-w-[1320px] mx-auto px-4">
 
-      {/* HEADER */}
-      <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center gap-3">
-          <div className="w-[3px] h-[26px] md:h-[36px] bg-red-600" />
-          <h2 className="text-[15px] md:text-[36px] font-normal font-[Poppins]">
-            Around the World
-          </h2>
+        {/* HEADER */}
+        <div className="flex justify-between items-center mb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-[3px] h-[26px] md:h-[36px] bg-red-600" />
+            <h2 className="text-[15px] md:text-[36px] font-normal font-[Poppins]">
+              Around the World
+            </h2>
+          </div>
+
+          <button className="group flex items-center justify-center gap-2 w-[36px] h-[36px] md:w-[148px] md:h-[44px] rounded-full bg-red-600 text-white text-[11px] md:text-[14px] font-semibold border-2 border-red-600 hover:bg-black transition-all duration-300">
+            <span className="hidden md:inline">VIEW ALL</span>
+            <img 
+              src={arrow}
+              alt="Arrow"
+              className="w-[14px] h-[14px] md:w-[16px] md:h-[16px] rotate-[-45deg] transition-all duration-300 group-hover:rotate-0 group-hover:translate-x-[3px]"
+            />
+          </button>
         </div>
 
-        <button className="group w-[36px] h-[36px] md:w-auto md:h-auto flex items-center justify-center md:gap-2 px-0 md:px-[20px] py-0 md:py-[9px] text-[11px] md:text-[13px] font-semibold rounded-full bg-red-600 text-white border-2 border-red-600 hover:bg-black transition-all duration-300">
-          <span className="hidden md:inline">VIEW ALL</span>
-          <span className="rotate-[-45deg] group-hover:rotate-0 transition-transform duration-300">
-            →
-          </span>
-        </button>
-      </div>
+        {/* FIRST ROW */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-[20px] md:gap-[25px]">
+          {data.slice(0, 3).map((item, i) => (
+            <Card key={i} item={item} imgClass="w-[180px] md:w-[190px]" />
+          ))}
+        </div>
 
-      {/* FIRST ROW */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-[20px] md:gap-[25px]">
-        {data.slice(0, 3).map((item, i) => (
-          <Card key={i} item={item} imgClass="w-[180px] md:w-[200px]" />
-        ))}
-      </div>
+        {/* SECOND ROW */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-[20px] md:gap-[25px] mt-[20px] md:mt-[25px]">
+          {data.slice(3).map((item, i) => (
+            <Card
+              key={i}
+              item={item}
+              imgClass="w-[120px] md:w-[110px] md:scale-[2.3]"
+            />
+          ))}
+        </div>
 
-      {/* SECOND ROW */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-[20px] md:gap-[25px] mt-[20px] md:mt-[25px]">
-        {data.slice(3).map((item, i) => (
-          <Card
-            key={i}
-            item={item}
-            imgClass="w-[120px] md:w-[140px] md:scale-[2.3]"
-          />
-        ))}
       </div>
-
     </section>
   );
 }
