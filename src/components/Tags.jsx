@@ -49,7 +49,7 @@ const tags = [
 
 export default function Tags() {
   return (
-    <div className="w-full max-w-[1350px] mx-auto px-4 mt-8   flex flex-wrap justify-center sm:justify-start gap-[8px] sm:gap-[12px] md:gap-[14px] font-[Poppins]">
+    <div className="w-full max-w-[1350px] mx-auto px-4 mt-8   flex flex-wrap justify-center sm:justify-start gap-[8px] sm:gap-[12px] md:gap-[14px] font-[Poppins,Helvetica, Arial, sans-serif]">
 
       {tags.map(({ icon, text, bg, color, link }, i) => (
         <a key={i} href={link}>
@@ -57,7 +57,7 @@ export default function Tags() {
             style={{ background: bg, color }}
             className="flex items-center gap-[6px] sm:gap-[8px] px-[10px] py-[6px] sm:px-[12px]  rounded-[10px] text-[13px] sm:text-[16px] lg:text-[20px] font-medium cursor-pointer"
           >
-            <span className="text-[14px] sm:text-[16px]">{icon}</span>
+            <span className="text-[14px] sm:text-[18px]">{icon}</span>
             {text}
           </div>
         </a>

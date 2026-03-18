@@ -44,8 +44,8 @@ const Card = ({ item, imgClass }) => (
 
 export default function AroundWorld() {
   return (
-    <section className="w-full bg-white">
-      <div className="max-w-[1320px] mx-auto px-4">
+    <section className="w-full  mb-6">
+      <div className="max-w-[1320px]  mx-auto px-4">
 
         {/* HEADER */}
         <div className="flex justify-between items-center mb-6">

@@ -67,7 +67,7 @@ className="block md:hidden w-full rounded-md"
 
 {/* TAG */}
 <a href={tagLink}>
-<span className="absolute top-[0px] left-[10px] md:left-18 bg-red-600 text-white text-[10px] md:text-[11px] px-2 md:px-3 py-1 uppercase font-semibold">
+<span className="absolute top-[0px] left-[11px] md:left-18 bg-red-600 text-white text-[10px] md:text-[11px] px-2 md:px-3 py-1 uppercase font-semibold">
 BRAND STORY
 </span>
 </a>

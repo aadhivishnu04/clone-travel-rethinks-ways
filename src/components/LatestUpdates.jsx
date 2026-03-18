@@ -64,7 +64,7 @@ e.preventDefault();
 e.stopPropagation();
 toggle(id);
 }}
-className="absolute top-3 right-3 w-[30px] h-[30px] flex items-center justify-center bg-white rounded-full shadow-md z-20"
+className="absolute top-3 right-3 w-[30px] h-[30px] flex items-center justify-center bg-white dark:bg-gray-800 rounded-full shadow-md z-20"
 >
 {bookmarks[id] ? <FaBookmark className="text-red-600 text-[13px]" /> : <FaRegBookmark className="text-red-600 text-[13px]" />}
 </button>
@@ -83,7 +83,7 @@ return (
 <div className="flex items-center justify-between mb-10">
   <div className="flex items-center gap-3">
     <div className="w-[3px] h-[24px] bg-red-600"/>
-    <h2 className="text-[24px] md:text-[30px] lg:text-[36px] font-medium font-poppins">
+    <h2 className="text-[24px] md:text-[30px] lg:text-[36px] font-medium font-poppins text-black dark:text-white">
       Latest Updates
     </h2>
   </div>
@@ -108,7 +108,7 @@ return (
     <a href={posts[0].link} className="relative overflow-hidden rounded-xl">
 
       {/* TAG */}
-      <span className="absolute top-0 left-4 md:left-10 bg-red-600 text-white text-[10px] px-2 py-1 uppercase z-10">
+      <span className="absolute top-0 left-4 md:left-10 bg-red-600 text-white text-[11px] px-2 py-1 font-semibold uppercase z-10">
         {posts[0].tag}
       </span>
 
@@ -122,12 +122,12 @@ return (
 
     <div>
       <a href={posts[0].link}>
-        <h3 className="text-[18px] md:text-[24px] lg:text-[32px] font-['Yeseva_One'] leading-[1.3] mb-4 transition group-hover:text-red-600">
+        <h3 className="text-[18px] md:text-[24px] lg:text-[32px] font-['Yeseva_One'] leading-[1.3] mb-4 transition group-hover:text-red-600 text-black dark:text-white">
           {posts[0].title}
         </h3>
       </a>
 
-      <p className="text-[15px] md:text-[22px] text-[#5B5F62] mb-6">
+      <p className="text-[15px] md:text-[22px] text-[#5B5F62] dark:text-gray-400 mb-6">
         {posts[0].desc}
       </p>
 
@@ -148,7 +148,7 @@ return (
 
         <a href={post.link} className="relative overflow-hidden rounded-lg">
 
-          <span className="absolute top-0 left-4 md:left-10 bg-red-600 text-white text-[10px] px-2 py-1 uppercase z-10">
+          <span className="absolute font-semibold top-0 left-4 md:left-10 bg-red-600 text-white text-[10px] px-2 py-1 uppercase z-10">
             {post.tag}
           </span>
 
@@ -162,7 +162,7 @@ return (
         </a>
 
         <a href={post.link}>
-          <h4 className="text-[16px] md:text-[22px] font-['Yeseva_One'] mt-3 mb-3 transition group-hover:text-red-600">
+          <h4 className="text-[16px] md:text-[22px] font-['Yeseva_One'] mt-3 mb-3 transition group-hover:text-red-600 text-black dark:text-white">
             {post.title}
           </h4>
         </a>

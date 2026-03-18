@@ -1,37 +1,33 @@
 import { useEffect, useState } from "react";
+import darkLogoSrc from "../assets/images/brand/travel-logo-dark.png";
+import gdBrandCreativeLogoSrc from "../assets/images/brand/gdbrandcreative-logo.svg";
+import lightLogoSrc from "../assets/images/brand/travel-logo-light.svg";
+import headerAdTravel01Src from "../assets/images/ads/header-travel-01.jpg";
+import headerAdGdSrc from "../assets/images/ads/header-gd.jpg";
+import headerAdTravel02Src from "../assets/images/ads/header-travel-02.jpg";
+import {
+  headerAdsContent,
+  headerCompanyLinks,
+  headerLinks,
+  headerMainMenu,
+  headerMobileCopyrightText,
+  headerSocialIconColors,
+  headerTopSocials
+} from "../Data/headerContent";
+import WhatsAppIcon from "../components/WhatsAppIcon";
 
-const topSocials = [
-  { href: "https://whatsapp.com/channel/0029Vb69sC2JJhzYpd1zRQ1C", icon: "fa-whatsapp" },
-  { href: "https://www.instagram.com/travel.rethinkways?igsh=MWEyaWVrZDllZW5lcQ==", icon: "fa-instagram" },
-  { href: "https://www.facebook.com/share/1CNm92gSxo/", icon: "fa-facebook-f" },
-  { href: "https://x.com/rethinkways", icon: "fa-x-twitter" },
-  { href: "https://www.youtube.com/@Travel.Rethinkways", icon: "fa-youtube" },
-  { href: "https://www.threads.com/@travel.rethinkways", icon: "fa-threads" },
-  { href: "https://in.pinterest.com/travelrethinkways/", icon: "fa-pinterest-p" },
-  { href: "http://linkedin.com/company/travel-rethink-ways/", icon: "fa-linkedin-in" }
-];
-
-const socialIconColors = {
-  "fa-whatsapp": "text-[#25D366]",
-  "fa-instagram": "text-[#E1306C]",
-  "fa-facebook-f": "text-[#1877F2]",
-  "fa-x-twitter": "text-white",
-  "fa-youtube": "text-[#FF0000]",
-  "fa-threads": "text-white",
-  "fa-pinterest-p": "text-[#E60023]",
-  "fa-linkedin-in": "text-[#0A66C2]"
+const topSocials = headerTopSocials;
+const socialIconColors = headerSocialIconColors;
+const mainMenu = headerMainMenu;
+const headerAdImageMap = {
+  travel01: headerAdTravel01Src,
+  gd: headerAdGdSrc,
+  travel02: headerAdTravel02Src
 };
-
-const mainMenu = [
-  { label: "Home", href: "https://travel.rethinkways.com/" },
-  { label: "Tour", href: "https://travel.rethinkways.com/categories/" },
-  { label: "Super Deals", href: "https://travel.rethinkways.com/super-deals/" },
-  { label: "Jobs", href: "https://travel.rethinkways.com/jobs/" },
-  { label: "Brand Story", href: "https://travel.rethinkways.com/category/brand-story/" }
-];
-
-const lightLogoSrc = "https://travel.rethinkways.com/wp-content/uploads/2025/11/Travel_Logo-01.svg";
-const darkLogoSrc = "https://travel.rethinkways.com/wp-content/uploads/2026/02/travel-rethink-ways-dark-mode-logo-300x150.png";
+const headerAds = headerAdsContent.map((item) => ({
+  ...item,
+  image: headerAdImageMap[item.imageKey] || headerAdTravel01Src
+}));
 
 const getInitialDarkMode = () => {
   if (typeof window === "undefined") return false;
@@ -53,7 +49,9 @@ function Header() {
   const [darkMode, setDarkMode] = useState(getInitialDarkMode);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileCompanyOpen, setMobileCompanyOpen] = useState(false);
+  const [headerAdIndex, setHeaderAdIndex] = useState(0);
   const headerLogoSrc = darkMode ? darkLogoSrc : lightLogoSrc;
+  const currentHeaderAd = headerAds[headerAdIndex % headerAds.length];
 
   useEffect(() => {
     document.body.classList.toggle("dark", darkMode);
@@ -72,10 +70,18 @@ function Header() {
     };
   }, [mobileMenuOpen]);
 
+  useEffect(() => {
+    if (headerAds.length < 2) return undefined;
+    const timerId = window.setInterval(() => {
+      setHeaderAdIndex((prev) => (prev + 1) % headerAds.length);
+    }, 3500);
+    return () => window.clearInterval(timerId);
+  }, []);
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    const url = `https://travel.rethinkways.com/?s=${encodeURIComponent(query.trim())}`;
-    window.open(url, "_top");
+    const url = `${headerLinks.searchBase}?s=${encodeURIComponent(query.trim())}`;
+    window.open(url, "_self");
   };
 
   return (
@@ -87,7 +93,7 @@ function Header() {
             : "border-b border-[#ccc] bg-white shadow-[0_1px_8px_rgba(0,0,0,0.08)]"
         }`}
       >
-        <div className="relative mx-auto flex h-[76px] max-w-[1320px] items-center justify-between px-4">
+        <div className="relative mx-auto flex h-[76px] max-w-[1350px] items-center justify-between px-4">
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
@@ -98,8 +104,8 @@ function Header() {
           </button>
 
           <a
-            href="https://travel.rethinkways.com/"
-            target="_blank"
+            href={headerLinks.home}
+            target="_self"
             rel="noopener noreferrer"
             className="absolute left-1/2 -translate-x-1/2"
           >
@@ -124,7 +130,7 @@ function Header() {
                   darkMode ? "translate-x-4 text-[#111827]" : "text-[#5b5b5b]"
                 }`}
               >
-                <i className={`fa-solid ${darkMode ? "fa-sun text-[#f59e0b]" : "fa-moon"} text-[12px]`} />
+                <i className={`fa-regular ${darkMode ? "fa-sun text-[#f59e0b]" : "fa-moon text-[#606060]"} text-[12px]`} />
               </span>
             </span>
           </label>
@@ -171,7 +177,7 @@ function Header() {
                 <a
                   key={item.label}
                   href={item.href}
-                  target="_blank"
+                  target="_self"
                   rel="noopener noreferrer"
                   className="block py-[11px] text-[18px] font-[700] uppercase tracking-[0.3px] text-white"
                 >
@@ -180,8 +186,8 @@ function Header() {
               ))}
 
               <a
-                href="https://travel.rethinkways.com/wishlist/"
-                target="_blank"
+                href={headerLinks.wishlist}
+                target="_self"
                 rel="noopener noreferrer"
                 className="block py-[11px] text-[18px] font-[700] uppercase tracking-[0.3px] text-white"
               >
@@ -199,22 +205,19 @@ function Header() {
 
               {mobileCompanyOpen && (
                 <div className="border-t border-[#1f1f1f]">
-                  <a
-                    href="https://travel.rethinkways.com/about-us-travel-rethink-ways/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block border-b border-[#1f1f1f] py-[11px] text-[18px] font-[500] uppercase text-white/80"
-                  >
-                    About Us
-                  </a>
-                  <a
-                    href="https://travel.rethinkways.com/contact-us/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block py-[11px] text-[18px] font-[500] uppercase text-white/80"
-                  >
-                    Contact Us
-                  </a>
+                  {headerCompanyLinks.map((item, index) => (
+                    <a
+                      key={`mobile-company-${item.label}`}
+                      href={item.href}
+                      target="_self"
+                      rel="noopener noreferrer"
+                      className={`block py-[11px] text-[18px] font-[500] uppercase text-white/80 ${
+                        index < headerCompanyLinks.length - 1 ? "border-b border-[#1f1f1f]" : ""
+                      }`}
+                    >
+                      {item.label}
+                    </a>
+                  ))}
                 </div>
               )}
             </nav>
@@ -225,18 +228,22 @@ function Header() {
                   <a
                     key={`m-${item.icon}`}
                     href={item.href}
-                    target="_blank"
+                    target="_self"
                     rel="noopener noreferrer"
                     className="text-[24px]"
                   >
-                    <i className={`fa-brands ${item.icon} ${socialIconColors[item.icon] || "text-[#2a2a2a]"}`} />
+                    {item.icon === "fa-whatsapp" ? (
+                      <WhatsAppIcon className={socialIconColors[item.icon] || "text-[#2a2a2a]"} />
+                    ) : (
+                      <i className={`fa-brands ${item.icon} ${socialIconColors[item.icon] || "text-[#2a2a2a]"}`} />
+                    )}
                   </a>
                 ))}
               </div>
               <div className="flex items-center justify-between border-t border-[#1f1f1f] pt-3">
-                <p className="text-[15px] text-white/75">© 2025 Travel Rethink Ways from</p>
+                <p className="text-[15px] text-white/75">{headerMobileCopyrightText}</p>
                 <img
-                  src="https://travel.rethinkways.com/wp-content/uploads/2025/11/gdbrandcreative_logo-01.svg"
+                  src={gdBrandCreativeLogoSrc}
                   alt="Brand Creative"
                   className="h-auto w-[120px]"
                 />
@@ -246,18 +253,18 @@ function Header() {
         </div>
       )}
 
-      <div className="hidden bg-[#232326] text-white lg:block">
-        <div className="mx-auto flex h-[38px] max-w-[1320px] items-center justify-between px-4">
-          <div className="flex items-center gap-5">
+      <div className="hidden bg-black text-white lg:block">
+        <div className="mx-auto flex h-[38px] max-w-[1350px] items-center justify-between px-4">
+          <div className="flex items-center gap-4">
             {topSocials.map((item) => (
               <a
                 key={item.icon}
                 href={item.href}
-                target="_blank"
+                target="_self"
                 rel="noopener noreferrer"
-                className="text-[14px] font-normal text-white hover:text-[#cccccc]"
+                className="inline-flex items-center justify-center text-[14px] leading-none font-normal text-white hover:text-[#cccccc]"
               >
-                <i className={`fa-brands ${item.icon}`} />
+                {item.icon === "fa-whatsapp" ? <WhatsAppIcon className="h-[14px] w-[14px]" /> : <i className={`fa-brands ${item.icon}`} />}
               </a>
             ))}
           </div>
@@ -290,7 +297,7 @@ function Header() {
                     darkMode ? "translate-x-5 text-[#111827]" : "text-[#5b5b5b]"
                   }`}
                 >
-                  <i className={`fa-solid ${darkMode ? "fa-sun text-[#f59e0b]" : "fa-moon"} text-[12px]`} />
+                  <i className={`fa-regular ${darkMode ? "fa-sun text-[#f59e0b]" : "fa-moon text-[#606060]"} text-[12px]`} />
                 </span>
               </span>
             </label>
@@ -298,60 +305,63 @@ function Header() {
         </div>
       </div>
 
-      <div className="trw-desktop-middle hidden bg-[#f3f3f3] lg:block">
-        <div className="mx-auto grid min-h-[170px] max-w-[1320px] grid-cols-1 items-center gap-6 px-4 py-6 lg:grid-cols-[320px_1fr]">
-          <a href="https://travel.rethinkways.com/" target="_blank" rel="noopener noreferrer" className="self-center justify-self-center lg:justify-self-start">
+      <div className={`trw-desktop-middle hidden lg:block ${darkMode ? "bg-[#0e0908]" : "bg-white"}`}>
+        <div className="mx-auto grid min-h-[170px] max-w-[1350px] grid-cols-1 items-center gap-6 px-4 py-6 lg:grid-cols-[320px_1fr]">
+          <a href={headerLinks.home} target="_self" rel="noopener noreferrer" className="self-center justify-self-center lg:justify-self-start">
             <img
               src={headerLogoSrc}
               alt="Travel Rethink Ways Logo"
-              className="h-auto w-[280px]"
+              className="h-auto w-[250px]"
             />
           </a>
 
           <div className="flex self-center justify-end">
             <div className="flex flex-col items-end">
               <div className="flex items-center justify-end gap-3">
-                <span className="text-[10px] tracking-[2px] text-black/45 [writing-mode:vertical-rl] [transform:rotate(180deg)]">
+                <span className={`text-[7px] tracking-[2px] ${darkMode ? "text-white/45" : "text-black/45"} [writing-mode:vertical-rl] [transform:rotate(180deg)]`}>
                   SPONSORED AD
                 </span>
                 <a
-                  href="https://wa.me/919962610113?text=Hi!%20I%20came%20across%20GD%20Brand%20Creative%20on%20Travel%20Rethink%20Ways%20and%20I'd%20like%20to%20enquire%20about%20your%20creative%20services%20for%20my%20business."
-                  target="_blank"
+                  href={currentHeaderAd.href}
+                  target="_self"
                   rel="noopener noreferrer"
+                  aria-label={currentHeaderAd.ariaLabel}
                 >
                   <img
-                    src="https://travel.rethinkways.com/wp-content/uploads/2025/11/GD_Ad_Nov_head.jpg"
-                    alt="Advertisement banner"
+                    src={currentHeaderAd.image}
+                    alt={currentHeaderAd.alt}
                     className="h-[110px] w-[900px] max-w-full rounded-xl object-cover"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </a>
               </div>
-            <div className="mt-2 w-[900px] max-w-full text-center">
-              <a
-                href="https://travel.rethinkways.com/advertise-with-us/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`inline-flex items-center gap-1 text-[14px] font-medium ${
-                  darkMode ? "text-white hover:text-white/80" : "text-black hover:text-[#666]"
-                }`}
-              >
-                Advertise With Us
-                <i className="fa-solid fa-chevron-right text-[13px]" aria-hidden="true" />
-              </a>
-            </div>
+              <div className="mt-2 w-[900px] max-w-full text-center">
+                <a
+                  href={headerLinks.advertiseWithUs}
+                  target="_self"
+                  rel="noopener noreferrer"
+                  className={`inline-flex items-center gap-1 text-[14px] font-medium ${
+                    darkMode ? "text-white hover:text-white/80" : "text-black hover:text-[#666]"
+                  }`}
+                >
+                  Advertise With Us
+                  <i className="fa-solid fa-chevron-right text-[13px]" aria-hidden="true" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="sticky top-0 z-40 hidden bg-[#242427] text-white lg:block">
-        <div className="mx-auto max-w-[1320px] px-4">
+      <div className="sticky top-0 z-40 hidden bg-black text-white lg:block">
+        <div className="mx-auto max-w-[1350px] px-4">
           <nav className="float-none flex flex-wrap items-start justify-between md:flex-nowrap">
             {mainMenu.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
-                target="_blank"
+                target="_self"
                 rel="noopener noreferrer"
                 className="px-6 py-4 text-[14px] font-medium uppercase tracking-[0.4px] text-[#f5f5f5] [font-family:Poppins,Helvetica,Arial,sans-serif] hover:bg-[#3a3a3d]"
               >
@@ -360,8 +370,8 @@ function Header() {
             ))}
 
             <a
-              href="https://travel.rethinkways.com/wishlist/"
-              target="_blank"
+              href={headerLinks.wishlist}
+              target="_self"
               rel="noopener noreferrer"
               className="flex items-center gap-2 px-6 py-4 text-[14px] font-medium uppercase text-[#f5f5f5] [font-family:Poppins,Helvetica,Arial,sans-serif] hover:bg-[#3a3a3d]"
             >
@@ -375,24 +385,20 @@ function Header() {
                 <i className="fa-solid fa-angle-down text-[14px]" />
               </button>
               <div className="invisible absolute right-0 z-50 mt-0 w-full bg-[#fff] text-black opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100">
-                <a
-                  href="https://travel.rethinkways.com/about-us-travel-rethink-ways/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 border-b border-[#d7d7d7] px-5 py-4 text-[14px] hover:bg-[#dfdfdf]"
-                >
-                  <i className="fa-solid fa-user text-[14px]" />
-                  About Us
-                </a>
-                <a
-                  href="https://travel.rethinkways.com/contact-us/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 px-5 py-4 text-[14px] hover:bg-[#dfdfdf]"
-                >
-                  <i className="fa-solid fa-phone text-[14px]" />
-                  Contact Us
-                </a>
+                {headerCompanyLinks.map((item, index) => (
+                  <a
+                    key={`desktop-company-${item.label}`}
+                    href={item.href}
+                    target="_self"
+                    rel="noopener noreferrer"
+                    className={`flex items-center gap-3 px-5 py-4 text-[14px] hover:bg-[#dfdfdf] ${
+                      index < headerCompanyLinks.length - 1 ? "border-b border-[#d7d7d7]" : ""
+                    }`}
+                  >
+                    <i className={`fa-solid ${item.icon} text-[14px]`} />
+                    {item.label}
+                  </a>
+                ))}
               </div>
             </div>
           </nav>

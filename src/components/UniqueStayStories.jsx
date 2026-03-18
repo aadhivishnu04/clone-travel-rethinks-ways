@@ -12,7 +12,7 @@ export default function UniqueStay() {
 
   return (
 
-    <section className="w-full md:max-w-[1320px] mx-auto px-0 md:px-4">
+    <section className="w-full md:max-w-[1320px] mx-auto px-0 mb-6 md:px-4">
 
       {/* Header */}
       <div className="flex items-center justify-between mb-[20px] md:mb-[25px]">
@@ -40,7 +40,7 @@ export default function UniqueStay() {
 
 
       {/* OUTER CARD */}
-      <div className="relative rounded-[12px] overflow-hidden group">
+      <div className="relative md:rounded-[12px] overflow-hidden group">
 
         {/* IMAGE */}
         <div className="relative">

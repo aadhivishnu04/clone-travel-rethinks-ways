@@ -1,4 +1,4 @@
-import Header from "./components/Header"
+import Header from "./components/Header";
 import Banner from "./components/Banner";
 
 import Tags from "./components/Tags";
@@ -19,14 +19,20 @@ import VisaFreeEscapes from "./components/VisaFreeEscapes"
 import LatestUpdates from "./components/LatestUpdates"
 
 import TravelMood from "./components/TravelMood"
-import Footer from "./components/Footer"
+import WhatsAppIcon from "./components/WhatsAppIcon";   
+import Footer from "./components/Footer"; 
+ 
 
 
 
 function App() {
   return (
-    <div className="space-y-8 md:space-y-10">"
-      <Header/>
+    
+          <div className="min-h-screen bg-white dark:bg-[#0e0908] text-black dark:text-white space-y-8 md:space-y-10 " >
+
+      
+      {/* <Navbar/> */}
+     <Header/>
       <Banner />
       <Tags />
       <LatestUpdates/>
@@ -38,7 +44,9 @@ function App() {
        <AroundTheWorld/>
       <VisaFreeEscapes/>
       <TravelMood/>
+      {/* <WhatsAppIcon/> */}
       <Footer/>
+
        
     </div>
   );
