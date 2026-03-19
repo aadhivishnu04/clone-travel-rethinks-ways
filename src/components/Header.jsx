@@ -31,20 +31,18 @@ const headerAds = headerAdsContent.map((item) => ({
 
 const getInitialDarkMode = () => {
   if (typeof window === "undefined") return false;
-
   const stored = window.localStorage.getItem("trw-dark-mode");
   if (stored === "1") return true;
   if (stored === "0") return false;
-
   return (
-    document.body.classList.contains("dark")
-    || document.body.classList.contains("jnews-dark-mode")
-    || document.body.classList.contains("trw-dark-mode")
-    || document.documentElement.classList.contains("trw-dark-mode")
+    document.body.classList.contains("dark") ||
+    document.body.classList.contains("jnews-dark-mode") ||
+    document.body.classList.contains("trw-dark-mode") ||
+    document.documentElement.classList.contains("trw-dark-mode")
   );
 };
 
-function Header() {
+function Header({ onDarkModeChange }) {
   const [query, setQuery] = useState("");
   const [darkMode, setDarkMode] = useState(getInitialDarkMode);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -59,15 +57,14 @@ function Header() {
     document.body.classList.toggle("trw-dark-mode", darkMode);
     document.documentElement.classList.toggle("trw-dark-mode", darkMode);
     localStorage.setItem("trw-dark-mode", darkMode ? "1" : "0");
+    if (onDarkModeChange) onDarkModeChange(darkMode);
   }, [darkMode]);
 
   useEffect(() => {
     if (!mobileMenuOpen) return undefined;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
+    return () => { document.body.style.overflow = previousOverflow; };
   }, [mobileMenuOpen]);
 
   useEffect(() => {
@@ -84,8 +81,13 @@ function Header() {
     window.open(url, "_self");
   };
 
+  const handleDarkModeToggle = (val) => {
+    setDarkMode(val);
+  };
+
   return (
     <header className="trw-header sticky top-0 z-50 [font-family:Poppins,sans-serif] lg:static lg:z-auto">
+      {/* MOBILE TOP BAR */}
       <div
         className={`trw-mobile-top lg:hidden ${
           darkMode
@@ -97,7 +99,9 @@ function Header() {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className={`inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors ${darkMode ? "bg-[#151922] text-white" : "text-black"}`}
+            className={`inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
+              darkMode ? "bg-[#151922] text-white" : "text-black"
+            }`}
             aria-label="Open menu"
           >
             <i className="fa-solid fa-bars text-[26px]" />
@@ -109,34 +113,43 @@ function Header() {
             rel="noopener noreferrer"
             className="absolute left-1/2 -translate-x-1/2"
           >
-            <img
-              src={headerLogoSrc}
-              alt="Travel Rethink Ways Logo"
-              className="h-auto w-[134px]"
-            />
+            <img src={headerLogoSrc} alt="Travel Rethink Ways Logo" className="h-auto w-[134px]" />
           </a>
 
-          <label className="inline-flex cursor-pointer items-center" title={darkMode ? "Dark mode on" : "Dark mode off"}>
+          {/* MOBILE DARK MODE TOGGLE */}
+          <label
+            className="inline-flex cursor-pointer items-center"
+            title={darkMode ? "Dark mode on" : "Dark mode off"}
+          >
             <input
               type="checkbox"
               checked={darkMode}
-              onChange={(e) => setDarkMode(e.target.checked)}
+              onChange={(e) => handleDarkModeToggle(e.target.checked)}
               className="sr-only"
               aria-label={`Dark mode toggle (${darkMode ? "on" : "off"})`}
             />
-            <span className={`relative h-8 w-12 rounded-full transition-colors ${darkMode ? "bg-[#111827]" : "bg-[#d7d7d7]"}`}>
+            <span
+              className={`relative h-8 w-12 rounded-full transition-colors ${
+                darkMode ? "bg-[#111827]" : "bg-[#d7d7d7]"
+              }`}
+            >
               <span
                 className={`absolute top-[2px] left-[2px] flex h-7 w-7 items-center justify-center rounded-full bg-[#efefef] transition-transform ${
                   darkMode ? "translate-x-4 text-[#111827]" : "text-[#5b5b5b]"
                 }`}
               >
-                <i className={`fa-regular ${darkMode ? "fa-sun text-[#f59e0b]" : "fa-moon text-[#606060]"} text-[12px]`} />
+                <i
+                  className={`fa-regular ${
+                    darkMode ? "fa-sun text-[#f59e0b]" : "fa-moon text-[#606060]"
+                  } text-[12px]`}
+                />
               </span>
             </span>
           </label>
         </div>
       </div>
 
+      {/* MOBILE MENU OVERLAY */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-[99999] lg:hidden">
           <div
@@ -200,7 +213,11 @@ function Header() {
                 className="flex w-full items-center justify-between py-[11px] text-left text-[18px] font-[700] uppercase tracking-[0.3px]"
               >
                 <span className="text-[#e11]">Company</span>
-                <i className={`fa-solid fa-angle-${mobileCompanyOpen ? "up" : "down"} text-[24px] text-[#cfcfcf]`} />
+                <i
+                  className={`fa-solid fa-angle-${
+                    mobileCompanyOpen ? "up" : "down"
+                  } text-[24px] text-[#cfcfcf]`}
+                />
               </button>
 
               {mobileCompanyOpen && (
@@ -242,17 +259,14 @@ function Header() {
               </div>
               <div className="flex items-center justify-between border-t border-[#1f1f1f] pt-3">
                 <p className="text-[15px] text-white/75">{headerMobileCopyrightText}</p>
-                <img
-                  src={gdBrandCreativeLogoSrc}
-                  alt="Brand Creative"
-                  className="h-auto w-[120px]"
-                />
+                <img src={gdBrandCreativeLogoSrc} alt="Brand Creative" className="h-auto w-[120px]" />
               </div>
             </div>
           </aside>
         </div>
       )}
 
+      {/* DESKTOP TOP BAR (always black) */}
       <div className="hidden bg-black text-white lg:block">
         <div className="mx-auto flex h-[38px] max-w-[1350px] items-center justify-between px-4">
           <div className="flex items-center gap-4">
@@ -264,7 +278,11 @@ function Header() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center text-[14px] leading-none font-normal text-white hover:text-[#cccccc]"
               >
-                {item.icon === "fa-whatsapp" ? <WhatsAppIcon className="h-[14px] w-[14px]" /> : <i className={`fa-brands ${item.icon}`} />}
+                {item.icon === "fa-whatsapp" ? (
+                  <WhatsAppIcon className="h-[14px] w-[14px]" />
+                ) : (
+                  <i className={`fa-brands ${item.icon}`} />
+                )}
               </a>
             ))}
           </div>
@@ -283,21 +301,33 @@ function Header() {
               </button>
             </form>
 
-            <label className="inline-flex cursor-pointer items-center" title={darkMode ? "Dark mode on" : "Dark mode off"}>
+            {/* DESKTOP DARK MODE TOGGLE */}
+            <label
+              className="inline-flex cursor-pointer items-center"
+              title={darkMode ? "Dark mode on" : "Dark mode off"}
+            >
               <input
                 type="checkbox"
                 checked={darkMode}
-                onChange={(e) => setDarkMode(e.target.checked)}
+                onChange={(e) => handleDarkModeToggle(e.target.checked)}
                 className="sr-only"
                 aria-label={`Dark mode toggle (${darkMode ? "on" : "off"})`}
               />
-              <span className={`relative h-7 w-12 rounded-full transition-colors ${darkMode ? "bg-[#111827]" : "bg-[#65656a]"}`}>
+              <span
+                className={`relative h-7 w-12 rounded-full transition-colors duration-300 ${
+                  darkMode ? "bg-[#111827]" : "bg-[#65656a]"
+                }`}
+              >
                 <span
-                  className={`absolute top-[2px] left-[2px] flex h-[24px] w-[24px] items-center justify-center rounded-full bg-[#efefef] transition-transform ${
+                  className={`absolute top-[2px] left-[2px] flex h-[24px] w-[24px] items-center justify-center rounded-full bg-[#efefef] transition-transform duration-300 ${
                     darkMode ? "translate-x-5 text-[#111827]" : "text-[#5b5b5b]"
                   }`}
                 >
-                  <i className={`fa-regular ${darkMode ? "fa-sun text-[#f59e0b]" : "fa-moon text-[#606060]"} text-[12px]`} />
+                  <i
+                    className={`fa-regular ${
+                      darkMode ? "fa-sun text-[#f59e0b]" : "fa-moon text-[#606060]"
+                    } text-[12px]`}
+                  />
                 </span>
               </span>
             </label>
@@ -305,20 +335,30 @@ function Header() {
         </div>
       </div>
 
-      <div className={`trw-desktop-middle hidden lg:block ${darkMode ? "bg-[#0e0908]" : "bg-white"}`}>
+      {/* DESKTOP MIDDLE (logo + ad) */}
+      <div
+        className={`trw-desktop-middle hidden lg:block transition-colors duration-300 ${
+          darkMode ? "bg-[#0e0908]" : "bg-white"
+        }`}
+      >
         <div className="mx-auto grid min-h-[170px] max-w-[1350px] grid-cols-1 items-center gap-6 px-4 py-6 lg:grid-cols-[320px_1fr]">
-          <a href={headerLinks.home} target="_self" rel="noopener noreferrer" className="self-center justify-self-center lg:justify-self-start">
-            <img
-              src={headerLogoSrc}
-              alt="Travel Rethink Ways Logo"
-              className="h-auto w-[250px]"
-            />
+          <a
+            href={headerLinks.home}
+            target="_self"
+            rel="noopener noreferrer"
+            className="self-center justify-self-center lg:justify-self-start"
+          >
+            <img src={headerLogoSrc} alt="Travel Rethink Ways Logo" className="h-auto w-[250px]" />
           </a>
 
           <div className="flex self-center justify-end">
             <div className="flex flex-col items-end">
               <div className="flex items-center justify-end gap-3">
-                <span className={`text-[7px] tracking-[2px] ${darkMode ? "text-white/45" : "text-black/45"} [writing-mode:vertical-rl] [transform:rotate(180deg)]`}>
+                <span
+                  className={`text-[7px] tracking-[2px] ${
+                    darkMode ? "text-white/45" : "text-black/45"
+                  } [writing-mode:vertical-rl] [transform:rotate(180deg)]`}
+                >
                   SPONSORED AD
                 </span>
                 <a
@@ -341,7 +381,7 @@ function Header() {
                   href={headerLinks.advertiseWithUs}
                   target="_self"
                   rel="noopener noreferrer"
-                  className={`inline-flex items-center gap-1 text-[14px] font-medium ${
+                  className={`inline-flex items-center gap-1 text-[14px] font-medium transition-colors ${
                     darkMode ? "text-white hover:text-white/80" : "text-black hover:text-[#666]"
                   }`}
                 >
@@ -354,6 +394,7 @@ function Header() {
         </div>
       </div>
 
+      {/* DESKTOP NAV (always black) */}
       <div className="sticky top-0 z-40 hidden bg-black text-white lg:block">
         <div className="mx-auto max-w-[1350px] px-4">
           <nav className="float-none flex flex-wrap items-start justify-between md:flex-nowrap">
@@ -384,16 +425,22 @@ function Header() {
                 Company
                 <i className="fa-solid fa-angle-down text-[14px]" />
               </button>
-              <div className="invisible absolute right-0 z-50 mt-0 w-full bg-[#fff] text-black opacity-0 shadow-lg transition-all group-hover:visible group-hover:opacity-100">
+              <div
+                className={`invisible absolute right-0 z-50 mt-0 w-full shadow-lg opacity-0 transition-all group-hover:visible group-hover:opacity-100 ${
+                  darkMode ? "bg-[#1a1a1a] text-white" : "bg-white text-black"
+                }`}
+              >
                 {headerCompanyLinks.map((item, index) => (
                   <a
                     key={`desktop-company-${item.label}`}
                     href={item.href}
                     target="_self"
                     rel="noopener noreferrer"
-                    className={`flex items-center gap-3 px-5 py-4 text-[14px] hover:bg-[#dfdfdf] ${
-                      index < headerCompanyLinks.length - 1 ? "border-b border-[#d7d7d7]" : ""
-                    }`}
+                    className={`flex items-center gap-3 px-5 py-4 text-[14px] ${
+                      darkMode
+                        ? "hover:bg-[#2a2a2a] text-white border-[#2a2a2a]"
+                        : "hover:bg-[#dfdfdf] text-black border-[#d7d7d7]"
+                    } ${index < headerCompanyLinks.length - 1 ? "border-b" : ""}`}
                   >
                     <i className={`fa-solid ${item.icon} text-[14px]`} />
                     {item.label}

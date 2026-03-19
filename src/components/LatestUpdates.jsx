@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaRegBookmark, FaBookmark } from "react-icons/fa";
 import arrow from "../assets/Travel_arrow.svg";
 
-const GAP = "gap-6"; // 🔥 single source of truth for spacing
+const GAP = "gap-6";
 
 const posts = [
 {
@@ -36,148 +36,136 @@ link:"https://travel.rethinkways.com/andaman-attractions-15-must-visit-wonders-2
 }
 ];
 
-
-// BUTTON
+// EXPAND BUTTON (READ MORE) — unchanged, always dark
 const expandBtn = (
 <div className="ml-auto relative flex items-center h-[44px] w-[44px] rounded-full bg-[#D02525] border-2 border-[#D02525] text-white overflow-hidden transition-all duration-[650ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:w-[150px] group-hover:bg-black">
-  
   <span className="flex items-center justify-center w-[44px] h-[44px]">
-    <img 
+    <img
       src={arrow}
       alt="Arrow"
       className="w-[22px] h-[22px] transition-all duration-500 rotate-[-45deg] group-hover:rotate-0 group-hover:translate-x-[4px]"
     />
   </span>
-
   <span className="absolute left-[52px] whitespace-nowrap text-[14px] font-semibold opacity-0 -translate-x-[10px] transition-all duration-[650ms] group-hover:opacity-100 group-hover:translate-x-0">
     READ MORE
   </span>
-
 </div>
 );
 
-
 const BookmarkBtn = ({ id, bookmarks, toggle }) => (
 <button
-onClick={(e)=>{
-e.preventDefault();
-e.stopPropagation();
-toggle(id);
-}}
-className="absolute top-3 right-3 w-[30px] h-[30px] flex items-center justify-center bg-white dark:bg-gray-800 rounded-full shadow-md z-20"
+  onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(id); }}
+  className="absolute top-3 right-3 w-[30px] h-[30px] flex items-center justify-center bg-white dark:bg-gray-800 rounded-full shadow-md z-20"
 >
-{bookmarks[id] ? <FaBookmark className="text-red-600 text-[13px]" /> : <FaRegBookmark className="text-red-600 text-[13px]" />}
+  {bookmarks[id] ? <FaBookmark className="text-red-600 text-[13px]" /> : <FaRegBookmark className="text-red-600 text-[13px]" />}
 </button>
 );
 
-export default function LatestUpdates() {
+export default function LatestUpdates({ darkMode }) {
 
-const [bookmarks,setBookmarks] = useState({});
-const toggle = (id) => setBookmarks(prev => ({...prev,[id]:!prev[id]}));
+const [bookmarks, setBookmarks] = useState({});
+const toggle = (id) => setBookmarks(prev => ({ ...prev, [id]: !prev[id] }));
 
 return (
 
 <div className="max-w-[1368px] mx-auto px-4 md:px-6 lg:px-8">
 
-{/* HEADER */}
-<div className="flex items-center justify-between mb-10">
-  <div className="flex items-center gap-3">
-    <div className="w-[3px] h-[24px] bg-red-600"/>
-    <h2 className="text-[24px] md:text-[30px] lg:text-[36px] font-medium font-poppins text-black dark:text-white">
-      Latest Updates
-    </h2>
+  {/* HEADER */}
+  <div className="flex items-center justify-between mb-10">
+    <div className="flex items-center gap-3">
+      <div className="w-[3px] h-[24px] bg-red-600" />
+      {/* ✅ DARK MODE: title white in dark, black in light */}
+      <h2 className={`text-[24px] md:text-[30px] lg:text-[36px] font-medium font-poppins ${darkMode ? "text-white" : "text-black"}`}>
+        Latest Updates
+      </h2>
+    </div>
+
+    {/* ✅ DARK MODE: VIEW ALL hover → white bg, black text, black border, black arrow */}
+    <button className={`group flex items-center justify-center gap-2 w-[36px] h-[36px] md:w-[148px] md:h-[44px] rounded-full bg-red-600 text-white text-[11px] md:text-[14px] font-semibold border-2 border-red-600 transition-all ${
+      darkMode
+        ? "hover:bg-white hover:text-black hover:border-black"
+        : "hover:bg-black"
+    }`}>
+      <span className="hidden md:inline">VIEW ALL</span>
+      <img
+        src={arrow}
+        alt="Arrow"
+        className={`w-[14px] h-[14px] md:w-[16px] md:h-[16px] transition-all rotate-[-45deg] group-hover:rotate-0 group-hover:translate-x-[3px] ${
+          darkMode ? "group-hover:invert" : ""
+        }`}
+      />
+    </button>
   </div>
 
-  <button className="group flex items-center justify-center gap-2 w-[36px] h-[36px] md:w-[148px] md:h-[44px] rounded-full bg-red-600 text-white text-[11px] md:text-[14px] font-semibold border-2 border-red-600 hover:bg-black transition-all">
-    <span className="hidden md:inline">VIEW ALL</span>
-    <img 
-      src={arrow}
-      alt="Arrow"
-      className="w-[14px] h-[14px] md:w-[16px] md:h-[16px] transition-all rotate-[-45deg] group-hover:rotate-0 group-hover:translate-x-[3px]"
-    />
-  </button>
-</div>
+  {/* MAIN CONTENT */}
+  <div className="space-y-6">
 
+    {/* FEATURED */}
+    <div className={`group grid grid-cols-1 md:grid-cols-2 ${GAP} items-center`}>
 
-{/* 🔥 MAIN CONTENT WRAPPER */}
-<div className="space-y-6">
-
-  {/* FEATURED */}
-  <div className={`group grid grid-cols-1 md:grid-cols-2 ${GAP} items-center`}>
-
-    <a href={posts[0].link} className="relative overflow-hidden rounded-xl">
-
-      {/* TAG */}
-      <span className="absolute top-0 left-4 md:left-10 bg-red-600 text-white text-[11px] px-2 py-1 font-semibold uppercase z-10">
-        {posts[0].tag}
-      </span>
-
-      <BookmarkBtn id="featured" bookmarks={bookmarks} toggle={toggle} />
-
-      <img 
-        src={posts[0].image} 
-        className="w-full h-[220px] sm:h-[260px] md:h-[300px] lg:h-[340px] object-cover"
-      />
-    </a>
-
-    <div>
-      <a href={posts[0].link}>
-        <h3 className="text-[18px] md:text-[24px] lg:text-[32px] font-['Yeseva_One'] leading-[1.3] mb-4 transition group-hover:text-red-600 text-black dark:text-white">
-          {posts[0].title}
-        </h3>
+      <a href={posts[0].link} className="relative overflow-hidden rounded-xl">
+        <span className="absolute top-0 left-4 md:left-10 bg-red-600 text-white text-[11px] px-2 py-1 font-semibold uppercase z-10">
+          {posts[0].tag}
+        </span>
+        <BookmarkBtn id="featured" bookmarks={bookmarks} toggle={toggle} />
+        <img
+          src={posts[0].image}
+          className="w-full h-[220px] sm:h-[260px] md:h-[300px] lg:h-[340px] object-cover"
+        />
       </a>
 
-      <p className="text-[15px] md:text-[22px] text-[#5B5F62] dark:text-gray-400 mb-6">
-        {posts[0].desc}
-      </p>
+      <div>
+        <a href={posts[0].link}>
+          {/* ✅ DARK MODE: title white in dark */}
+          <h3 className={`text-[18px] md:text-[24px] lg:text-[32px] font-['Yeseva_One'] leading-[1.3] mb-4 transition group-hover:text-red-600 ${darkMode ? "text-white" : "text-black"}`}>
+            {posts[0].title}
+          </h3>
+        </a>
 
-      <a href={posts[0].link} className="flex group">
-        {expandBtn}
-      </a>
+        {/* ✅ DARK MODE: desc white in dark */}
+        <p className={`text-[15px] md:text-[22px] mb-6 ${darkMode ? "text-white" : "text-[#5B5F62]"}`}>
+          {posts[0].desc}
+        </p>
+
+        <a href={posts[0].link} className="flex group">
+          {expandBtn}
+        </a>
+      </div>
+
+    </div>
+
+    {/* SMALL POSTS */}
+    <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 ${GAP}`}>
+      {posts.slice(1).map((post, i) => (
+        <div key={i} className="group flex flex-col">
+
+          <a href={post.link} className="relative overflow-hidden rounded-lg">
+            <span className="absolute font-semibold top-0 left-4 md:left-10 bg-red-600 text-white text-[10px] px-2 py-1 uppercase z-10">
+              {post.tag}
+            </span>
+            <BookmarkBtn id={i} bookmarks={bookmarks} toggle={toggle} />
+            <img
+              src={post.image}
+              className="w-full h-[180px] md:h-[210px] object-cover rounded-lg"
+            />
+          </a>
+
+          <a href={post.link}>
+            {/* ✅ DARK MODE: card titles white in dark */}
+            <h4 className={`text-[16px] md:text-[22px] font-['Yeseva_One'] mt-3 mb-3 transition group-hover:text-red-600 ${darkMode ? "text-white" : "text-black"}`}>
+              {post.title}
+            </h4>
+          </a>
+
+          <a href={post.link} className="flex mt-auto group">
+            {expandBtn}
+          </a>
+
+        </div>
+      ))}
     </div>
 
   </div>
-
-
-  {/* SMALL POSTS */}
-  <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 ${GAP}`}>
-
-    {posts.slice(1).map((post,i)=>(
-
-      <div key={i} className="group flex flex-col">
-
-        <a href={post.link} className="relative overflow-hidden rounded-lg">
-
-          <span className="absolute font-semibold top-0 left-4 md:left-10 bg-red-600 text-white text-[10px] px-2 py-1 uppercase z-10">
-            {post.tag}
-          </span>
-
-          <BookmarkBtn id={i} bookmarks={bookmarks} toggle={toggle} />
-
-          <img 
-            src={post.image} 
-            className="w-full h-[180px] md:h-[210px] object-cover rounded-lg"
-          />
-
-        </a>
-
-        <a href={post.link}>
-          <h4 className="text-[16px] md:text-[22px] font-['Yeseva_One'] mt-3 mb-3 transition group-hover:text-red-600 text-black dark:text-white">
-            {post.title}
-          </h4>
-        </a>
-
-        <a href={post.link} className="flex mt-auto group">
-          {expandBtn}
-        </a>
-
-      </div>
-
-    ))}
-
-  </div>
-
-</div>
 
 </div>
 

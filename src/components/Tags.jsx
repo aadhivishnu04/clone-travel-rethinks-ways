@@ -40,22 +40,25 @@ const tags = [
   { icon: <FaTree />, text: "Parks", link: "https://travel.rethinkways.com/category/parks/", bg: "#eae6f9", color: "#47408a" },
   { icon: <FaLandmark />, text: "Wonders", link: "https://travel.rethinkways.com/category/world-wonders/", bg: "#e5e7ff", color: "#343c96" },
   { icon: <FaTheaterMasks />, text: "Festivals", link: "https://travel.rethinkways.com/category/festivals/", bg: "#f4e2f7", color: "#71367c" },
-
-  // ✅ Correct placement
   { icon: <FaCity />, text: "City Escapes", link: "https://travel.rethinkways.com/category/city/", bg: "#e9fff4", color: "#1f6e55" },
   { icon: <FaWater />, text: "Waterfalls", link: "https://travel.rethinkways.com/category/waterfalls/", bg: "#ffe7eb", color: "#8A2f44" },
   { icon: <FaPaw />, text: "Wildlife", link: "https://travel.rethinkways.com/category/wildlife/", bg: "#dbfff6", color: "#146b5e" },
 ];
 
-export default function Tags() {
+// ✅ DARK MODE: tag bg/color are kept as-is (colorful pills look good on dark too)
+// No changes needed to individual tag styles — they use inline style colors which are readable on dark bg
+export default function Tags({ darkMode }) {
   return (
-    <div className="w-full max-w-[1350px] mx-auto px-4 mt-8   flex flex-wrap justify-center sm:justify-start gap-[8px] sm:gap-[12px] md:gap-[14px] font-[Poppins,Helvetica, Arial, sans-serif]">
+    <div className="w-full max-w-[1350px] mx-auto px-4 mt-8 flex flex-wrap justify-center sm:justify-start gap-[8px] sm:gap-[12px] md:gap-[14px] font-[Poppins,Helvetica,Arial,sans-serif]">
 
       {tags.map(({ icon, text, bg, color, link }, i) => (
         <a key={i} href={link}>
+          {/* ✅ DARK MODE: in dark, use a slightly darkened bg overlay via opacity wrapper */}
           <div
             style={{ background: bg, color }}
-            className="flex items-center gap-[6px] sm:gap-[8px] px-[10px] py-[6px] sm:px-[12px]  rounded-[10px] text-[13px] sm:text-[16px] lg:text-[20px] font-medium cursor-pointer"
+            className={`flex items-center gap-[6px] sm:gap-[8px] px-[10px] py-[6px] sm:px-[12px] rounded-[10px] text-[13px] sm:text-[16px] lg:text-[20px] font-medium cursor-pointer transition-opacity duration-300 ${
+              darkMode ? "opacity-85 hover:opacity-100" : "hover:opacity-90"
+            }`}
           >
             <span className="text-[14px] sm:text-[18px]">{icon}</span>
             {text}

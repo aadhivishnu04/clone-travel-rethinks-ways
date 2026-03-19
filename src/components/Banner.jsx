@@ -46,29 +46,27 @@ const slides = [
   }
 ];
 
-export default function Banner() {
+export default function Banner({ darkMode }) {
   const [bookmark, setBookmark] = useState(false);
   const [active, setActive] = useState(0);
 
   useEffect(() => {
-    // ✅ ONLY run slider on desktop
     if (window.innerWidth < 768) return;
-
     const interval = setInterval(() => {
       setActive((prev) => (prev + 1) % slides.length);
     }, 5000);
-
     return () => clearInterval(interval);
   }, []);
 
   const { title, tag, link, tagLink } = slides[active];
 
   return (
-    <div className="w-full sm:max-w-[1368px] mx-auto px-0 sm:px-4 lg:px-6 lg:mt-[40px]">
-
-      {/* ✅ MOBILE 500px FIX */}
+    <div
+      className={`w-full sm:max-w-[1368px] mx-auto px-0 sm:px-4 lg:px-6 lg:mt-[40px] transition-colors duration-300 ${
+        darkMode ? "bg-[#0a0a0a]" : "bg-white"
+      }`}
+    >
       <div className="group relative w-full h-[500px] sm:h-[480px] md:h-[560px] lg:h-[540px] overflow-hidden md:rounded-[16px] shadow-lg transition-all duration-300">
-
         {slides.map((s, i) => (
           <img
             key={i}
@@ -117,14 +115,13 @@ export default function Banner() {
                 className="w-[22px] h-[22px] transition-transform duration-700 rotate-[-45deg] group-hover:rotate-0"
               />
             </span>
-
             <span className="absolute left-[52px] whitespace-nowrap text-[14px] font-semibold opacity-0 -translate-x-[10px] transition-all duration-700 group-hover:opacity-100 group-hover:translate-x-0">
               READ MORE
             </span>
           </div>
         </a>
 
-        {/* dots (desktop only) */}
+        {/* dots */}
         <div className="hidden md:flex flex-col gap-3 absolute right-5 top-1/2 -translate-y-1/2 z-20">
           {slides.map((_, i) => (
             <button
@@ -139,21 +136,17 @@ export default function Banner() {
 
         {/* mobile content */}
         <div className="absolute bottom-0 left-0 w-full md:hidden bg-[#4A2F4A] text-white px-4 pt-6 pb-5 z-20">
-         
-           <a
-             href={link}
-              className="group absolute bottom-[110px] right-4 flex items-center gap-2 px-[12px] py-[5px] rounded-full border border-white/70 text-white text-[11px] bg-[#4A2F4A]" >
+          <a
+            href={link}
+            className="group absolute bottom-[110px] right-4 flex items-center gap-2 px-[12px] py-[5px] rounded-full border border-white/70 text-white text-[11px] bg-[#4A2F4A]"
+          >
             READ MORE
             <span className="inline-block -rotate-[35deg] transition-all duration-300 group-hover:rotate-0 group-hover:translate-x-[4px]">
               ➜
             </span>
           </a>
-
-          <h1 className="text-[16px] leading-[1.3] font-['Yeseva_One']">
-            {title}
-          </h1>
+          <h1 className="text-[16px] leading-[1.3] font-['Yeseva_One']">{title}</h1>
         </div>
-
       </div>
     </div>
   );

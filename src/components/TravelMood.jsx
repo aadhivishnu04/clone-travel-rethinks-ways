@@ -44,14 +44,16 @@ const moods = [
   { title: "Theme Parks", img: theme, link: "https://travel.rethinkways.com/category/theme-parks/" },
 ];
 
-export default function TravelMood() {
+export default function TravelMood({ darkMode }) {
   return (
     <section className="max-w-[1320px] mx-auto px-4">
 
       {/* HEADER */}
       <div className="flex items-center gap-3 mb-6 md:mb-8">
         <div className="w-[3px] h-[24px] md:h-[26px] bg-red-700" />
-        <h2 className="text-[15px] md:text-[36px] font-normal font-[Poppins]">
+
+        {/* ✅ DARK MODE: title white in dark, black in light */}
+        <h2 className={`text-[15px] md:text-[36px] font-normal font-[Poppins] ${darkMode ? "text-white" : "text-black"}`}>
           What's Your Travel Mood?
         </h2>
       </div>
@@ -76,19 +78,22 @@ export default function TravelMood() {
               {item.title}
             </h3>
 
-            {/* ✅ UPDATED BUTTON */}
-            <button className="absolute bottom-3 right-3 md:bottom-4 md:right-4 flex items-center gap-2 px-3 md:px-4 py-[5px] md:py-[6px] rounded-full font-medium text-[11px] md:text-[14px] bg-white text-black border border-white transition-all duration-300 group-hover:bg-black group-hover:text-white group-hover:border-red-500">
-
+            {/* ✅ DARK MODE: View hover → white bg, black text, black border, black arrow */}
+            <button className={`absolute bottom-3 right-3 md:bottom-4 md:right-4 flex items-center gap-2 px-3 md:px-4 py-[5px] md:py-[6px] rounded-full font-medium text-[11px] md:text-[14px] bg-white text-black border border-white transition-all duration-300 ${
+              darkMode
+                ? "group-hover:bg-white group-hover:text-black group-hover:border-black"
+                : "group-hover:bg-black group-hover:text-white group-hover:border-red-500"
+            }`}>
               View All
-
               <span className="flex items-center justify-center">
                 <img
                   src={arrow}
                   alt="arrow"
-                  className="w-[14px] h-[14px] brightness-0 rotate-[-45deg] transition-all duration-300 group-hover:invert group-hover:rotate-0 group-hover:translate-x-[2px]"
+                  className={`w-[14px] h-[14px] brightness-0 rotate-[-45deg] transition-all duration-300 group-hover:rotate-0 group-hover:translate-x-[2px] ${
+                    darkMode ? "" : "group-hover:invert"
+                  }`}
                 />
               </span>
-
             </button>
 
           </a>

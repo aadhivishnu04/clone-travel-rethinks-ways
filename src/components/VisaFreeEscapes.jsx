@@ -3,7 +3,7 @@ import { FaRegBookmark, FaBookmark } from "react-icons/fa";
 import img from "../assets/rethinkways-blog-visa-free-destination-cover-1140x540.jpg";
 import arrow from "../assets/Travel_arrow.svg";
 
-export default function VisaFreeEscapes() {
+export default function VisaFreeEscapes({ darkMode }) {
 
   const [bookmark, setBookmark] = useState(false);
 
@@ -25,28 +25,34 @@ export default function VisaFreeEscapes() {
           <div className="flex items-center gap-2">
             <div className="w-[3px] h-[26px] md:h-[32px] bg-red-700"></div>
 
-            <h2 className="text-[15px] md:text-[36px] font-normal font-[Poppins]">
+            {/* ✅ DARK MODE: title white in dark, black in light */}
+            <h2 className={`text-[15px] md:text-[36px] font-normal font-[Poppins] ${darkMode ? "text-white" : "text-black"}`}>
               VISA-Free Escapes
             </h2>
           </div>
 
-          <button className="group flex items-center justify-center gap-2 w-[36px] h-[36px] md:w-[148px] md:h-[44px] rounded-full bg-red-600 text-white text-[11px] md:text-[14px] font-semibold border-2 border-red-600 hover:bg-black transition-all">
+          {/* ✅ DARK MODE: VIEW ALL hover → white bg, black text, black border, black arrow */}
+          <button className={`group flex items-center justify-center gap-2 w-[36px] h-[36px] md:w-[148px] md:h-[44px] rounded-full bg-red-600 text-white text-[11px] md:text-[14px] font-semibold border-2 border-red-600 transition-all ${
+            darkMode
+              ? "hover:bg-white hover:text-black hover:border-black"
+              : "hover:bg-black"
+          }`}>
             <span className="hidden md:inline">VIEW ALL</span>
-
             <img
               src={arrow}
               alt="Arrow"
-              className="w-[14px] h-[14px] md:w-[16px] md:h-[16px] rotate-[-45deg] transition-all group-hover:rotate-0 group-hover:translate-x-[3px]"
+              className={`w-[14px] h-[14px] md:w-[16px] md:h-[16px] rotate-[-45deg] transition-all group-hover:rotate-0 group-hover:translate-x-[3px] ${
+                darkMode ? "group-hover:invert" : ""
+              }`}
             />
           </button>
         </div>
 
-        {/* ✅ CARD (SAME STRUCTURE AS EXPERIENCE INDIA) */}
-      <div className="group grid md:grid-cols-[65%_35%] items-start overflow-hidden md:rounded-[14px]">
+        {/* CARD */}
+        <div className="group grid md:grid-cols-[65%_35%] items-start overflow-hidden md:rounded-[14px]">
 
           {/* IMAGE */}
           <div className="relative">
-
             <a href={link}>
               <img
                 src={img}
@@ -56,10 +62,7 @@ export default function VisaFreeEscapes() {
             </a>
 
             {/* MOBILE TAG */}
-            <a
-              href={tagLink}
-              className="absolute top-2 left-4 md:hidden z-10"
-            >
+            <a href={tagLink} className="absolute top-2 left-4 md:hidden z-10">
               <span className="bg-[#3f4c60] text-white text-[10px] px-3 py-1">
                 VISA-FREE
               </span>
@@ -81,7 +84,6 @@ export default function VisaFreeEscapes() {
               READ MORE
               <img src={arrow} className="w-[12px] h-[12px] rotate-[-45deg]" />
             </a>
-
           </div>
 
           {/* CONTENT */}
@@ -116,18 +118,15 @@ export default function VisaFreeEscapes() {
             {/* DESKTOP BUTTON */}
             <a href={link} className="hidden md:block absolute bottom-4 right-4 group">
               <div className="relative flex items-center h-[44px] w-[44px] rounded-full bg-[#2f3e4f] text-white overflow-hidden transition-all duration-500 group-hover:w-[150px]">
-
                 <span className="flex items-center justify-center w-[44px] h-[44px]">
                   <img
                     src={arrow}
                     className="w-[20px] h-[20px] rotate-[-45deg] group-hover:rotate-0 transition-transform duration-500"
                   />
                 </span>
-
                 <span className="absolute left-[52px] whitespace-nowrap text-[14px] font-semibold opacity-0 -translate-x-[10px] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500">
                   READ MORE
                 </span>
-
               </div>
             </a>
 
