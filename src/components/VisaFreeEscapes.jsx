@@ -18,20 +18,17 @@ export default function VisaFreeEscapes({ darkMode }) {
 
   return (
     <section className="w-full mb-6">
-      <div className="w-full md:max-w-[1320px] mx-auto mb-6 px-0 md:px-4">
+      <div className="w-full md:max-w-[1500px] mx-auto mb-6 px-0 md:px-4">
 
         {/* HEADER */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
             <div className="w-[3px] h-[26px] md:h-[32px] bg-red-700"></div>
-
-            {/* ✅ DARK MODE: title white in dark, black in light */}
             <h2 className={`text-[15px] md:text-[36px] font-normal font-[Poppins] ${darkMode ? "text-white" : "text-black"}`}>
               VISA-Free Escapes
             </h2>
           </div>
 
-          {/* ✅ DARK MODE: VIEW ALL hover → white bg, black text, black border, black arrow */}
           <button className={`group flex items-center justify-center gap-2 w-[36px] h-[36px] md:w-[148px] md:h-[44px] rounded-full bg-red-600 text-white text-[11px] md:text-[14px] font-semibold border-2 border-red-600 transition-all ${
             darkMode
               ? "hover:bg-white hover:text-black hover:border-black"
@@ -48,16 +45,16 @@ export default function VisaFreeEscapes({ darkMode }) {
           </button>
         </div>
 
-        {/* CARD */}
-        <div className="group grid md:grid-cols-[65%_35%] items-start overflow-hidden md:rounded-[14px]">
+        {/* CARD — md:items-stretch on desktop only */}
+        <div className="group grid md:grid-cols-[65%_35%] items-start md:items-stretch overflow-hidden md:rounded-[14px]">
 
           {/* IMAGE */}
           <div className="relative">
-            <a href={link}>
+            <a href={link} className="block md:h-full">
               <img
                 src={img}
                 alt="visa free"
-                className="w-full aspect-[4/3] sm:aspect-[16/10] md:aspect-auto md:h-[535px] object-cover"
+                className="w-full aspect-[4/3] sm:aspect-[16/10] md:aspect-auto md:h-full object-cover"
               />
             </a>
 
@@ -86,8 +83,8 @@ export default function VisaFreeEscapes({ darkMode }) {
             </a>
           </div>
 
-          {/* CONTENT */}
-          <div className="relative bg-[#CFDCEC] px-[18px] md:px-[40px] pt-[20px] pb-[40px] md:pt-[50px] md:pb-[80px] flex flex-col justify-center gap-[8px] md:gap-[14px]">
+          {/* CONTENT — md:h-full stretches to match image height on desktop only */}
+          <div className="relative md:h-full bg-[#CFDCEC] px-[18px] md:px-[40px] pt-[20px] pb-[40px] md:pt-[50px] md:pb-[80px] flex flex-col justify-center gap-[8px] md:gap-[14px]">
 
             {/* DESKTOP TAG */}
             <a href={tagLink}>

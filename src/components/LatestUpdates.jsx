@@ -68,7 +68,7 @@ const toggle = (id) => setBookmarks(prev => ({ ...prev, [id]: !prev[id] }));
 
 return (
 
-<div className="max-w-[1368px] mx-auto px-4 md:px-6 lg:px-8">
+<div className="max-w-[1548px] mx-auto px-4 md:px-6 lg:px-8">
 
   {/* HEADER */}
   <div className="flex items-center justify-between mb-10">

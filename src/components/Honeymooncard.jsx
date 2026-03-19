@@ -78,7 +78,7 @@ const toggle = (id) => setBookmarks(prev => ({ ...prev, [id]: !prev[id] }));
 
 return (
 
-<div style={{ fontFamily: "Poppins" }} className="w-full max-w-[436px] sm:max-w-[1320px] mx-auto px-4 space-y-[40px]">
+<div style={{ fontFamily: "Poppins" }} className="w-full max-w-[436px] sm:max-w-[1500px] mx-auto px-4 space-y-[40px]">
 
   {sections.map((section, sIndex) => (
 

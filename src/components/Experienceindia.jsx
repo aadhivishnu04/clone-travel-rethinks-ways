@@ -13,8 +13,7 @@ export default function ExperienceIndia({ darkMode }) {
   return (
     <section className="w-full flex justify-center mb-6">
 
-      <div className="w-full md:max-w-[1320px] mb-6 px-0 md:px-4">
-
+       <div className="w-full md:max-w-[1500px] mx-auto mb-6 px-0 md:px-4">
         {/* HEADER */}
         <div className="flex items-center justify-between mb-[20px] md:mb-[30px]">
 

@@ -46,7 +46,7 @@ const moods = [
 
 export default function TravelMood({ darkMode }) {
   return (
-    <section className="max-w-[1320px] mx-auto px-4">
+    <section className="max-w-[1500px] mx-auto px-4">
 
       {/* HEADER */}
       <div className="flex items-center gap-3 mb-6 md:mb-8">

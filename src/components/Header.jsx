@@ -22,11 +22,11 @@ const mainMenu = headerMainMenu;
 const headerAdImageMap = {
   travel01: headerAdTravel01Src,
   gd: headerAdGdSrc,
-  travel02: headerAdTravel02Src
+  travel02: headerAdTravel02Src,
 };
 const headerAds = headerAdsContent.map((item) => ({
   ...item,
-  image: headerAdImageMap[item.imageKey] || headerAdTravel01Src
+  image: headerAdImageMap[item.imageKey] || headerAdTravel01Src,
 }));
 
 const getInitialDarkMode = () => {
@@ -48,9 +48,12 @@ function Header({ onDarkModeChange }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileCompanyOpen, setMobileCompanyOpen] = useState(false);
   const [headerAdIndex, setHeaderAdIndex] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
+
   const headerLogoSrc = darkMode ? darkLogoSrc : lightLogoSrc;
   const currentHeaderAd = headerAds[headerAdIndex % headerAds.length];
 
+  /* ── effects ── */
   useEffect(() => {
     document.body.classList.toggle("dark", darkMode);
     document.body.classList.toggle("jnews-dark-mode", darkMode);
@@ -62,34 +65,75 @@ function Header({ onDarkModeChange }) {
 
   useEffect(() => {
     if (!mobileMenuOpen) return undefined;
-    const previousOverflow = document.body.style.overflow;
+    const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = previousOverflow; };
+    return () => { document.body.style.overflow = prev; };
   }, [mobileMenuOpen]);
 
   useEffect(() => {
     if (headerAds.length < 2) return undefined;
-    const timerId = window.setInterval(() => {
-      setHeaderAdIndex((prev) => (prev + 1) % headerAds.length);
+    const id = window.setInterval(() => {
+      setHeaderAdIndex((p) => (p + 1) % headerAds.length);
     }, 3500);
-    return () => window.clearInterval(timerId);
+    return () => window.clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    const url = `${headerLinks.searchBase}?s=${encodeURIComponent(query.trim())}`;
-    window.open(url, "_self");
+    window.open(
+      `${headerLinks.searchBase}?s=${encodeURIComponent(query.trim())}`,
+      "_self"
+    );
   };
 
-  const handleDarkModeToggle = (val) => {
-    setDarkMode(val);
-  };
+  /* ── Dark-mode toggle (reusable) ── */
+  const DarkToggle = ({ size = "md" }) => (
+    <label
+      className="inline-flex cursor-pointer items-center"
+      title={darkMode ? "Dark mode on" : "Dark mode off"}
+    >
+      <input
+        type="checkbox"
+        checked={darkMode}
+        onChange={(e) => setDarkMode(e.target.checked)}
+        className="sr-only"
+        aria-label={`Dark mode toggle (${darkMode ? "on" : "off"})`}
+      />
+      <span
+        className={`relative rounded-full transition-colors duration-300 ${
+          size === "sm" ? "h-6 w-10" : "h-7 w-12"
+        } ${darkMode ? "bg-[#111827]" : "bg-[#d0d0d0]"}`}
+      >
+        <span
+          className={`absolute top-[2px] left-[2px] flex items-center justify-center rounded-full bg-white transition-transform duration-300 ${
+            size === "sm"
+              ? `h-5 w-5 ${darkMode ? "translate-x-4" : ""}`
+              : `h-[24px] w-[24px] ${darkMode ? "translate-x-5" : ""}`
+          }`}
+        >
+          <i
+            className={`fa-regular text-[11px] ${
+              darkMode ? "fa-sun text-[#f59e0b]" : "fa-moon text-[#888]"
+            }`}
+          />
+        </span>
+      </span>
+    </label>
+  );
 
   return (
-    <header className="trw-header sticky top-0 z-50 [font-family:Poppins,sans-serif] lg:static lg:z-auto">
-      {/* MOBILE TOP BAR */}
+    <>
+      {/* ══════════════════════════════════════
+          MOBILE — sticky top bar
+      ══════════════════════════════════════ */}
       <div
-        className={`trw-mobile-top lg:hidden ${
+        className={`sticky top-0 z-50 lg:hidden ${
           darkMode
             ? "border-b border-[#2a2a2a] bg-black shadow-[0_1px_8px_rgba(0,0,0,0.35)]"
             : "border-b border-[#ccc] bg-white shadow-[0_1px_8px_rgba(0,0,0,0.08)]"
@@ -99,57 +143,32 @@ function Header({ onDarkModeChange }) {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className={`inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
+            className={`inline-flex h-10 w-10 items-center justify-center rounded-full ${
               darkMode ? "bg-[#151922] text-white" : "text-black"
             }`}
             aria-label="Open menu"
           >
             <i className="fa-solid fa-bars text-[26px]" />
           </button>
-
           <a
             href={headerLinks.home}
             target="_self"
             rel="noopener noreferrer"
             className="absolute left-1/2 -translate-x-1/2"
           >
-            <img src={headerLogoSrc} alt="Travel Rethink Ways Logo" className="h-auto w-[134px]" />
-          </a>
-
-          {/* MOBILE DARK MODE TOGGLE */}
-          <label
-            className="inline-flex cursor-pointer items-center"
-            title={darkMode ? "Dark mode on" : "Dark mode off"}
-          >
-            <input
-              type="checkbox"
-              checked={darkMode}
-              onChange={(e) => handleDarkModeToggle(e.target.checked)}
-              className="sr-only"
-              aria-label={`Dark mode toggle (${darkMode ? "on" : "off"})`}
+            <img
+              src={headerLogoSrc}
+              alt="Travel Rethink Ways Logo"
+              className="h-auto w-[134px]"
             />
-            <span
-              className={`relative h-8 w-12 rounded-full transition-colors ${
-                darkMode ? "bg-[#111827]" : "bg-[#d7d7d7]"
-              }`}
-            >
-              <span
-                className={`absolute top-[2px] left-[2px] flex h-7 w-7 items-center justify-center rounded-full bg-[#efefef] transition-transform ${
-                  darkMode ? "translate-x-4 text-[#111827]" : "text-[#5b5b5b]"
-                }`}
-              >
-                <i
-                  className={`fa-regular ${
-                    darkMode ? "fa-sun text-[#f59e0b]" : "fa-moon text-[#606060]"
-                  } text-[12px]`}
-                />
-              </span>
-            </span>
-          </label>
+          </a>
+          <DarkToggle />
         </div>
       </div>
 
-      {/* MOBILE MENU OVERLAY */}
+      {/* ══════════════════════════════════════
+          MOBILE — fullscreen menu overlay
+      ══════════════════════════════════════ */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-[99999] lg:hidden">
           <div
@@ -157,7 +176,7 @@ function Header({ onDarkModeChange }) {
             onClick={() => setMobileMenuOpen(false)}
             aria-hidden="true"
           />
-          <aside className="relative flex h-full w-[100%] flex-col bg-black text-white">
+          <aside className="relative flex h-full w-full flex-col bg-black text-white">
             <button
               type="button"
               onClick={() => setMobileMenuOpen(false)}
@@ -167,6 +186,7 @@ function Header({ onDarkModeChange }) {
               ×
             </button>
 
+            {/* search */}
             <div className="px-5 pt-20">
               <form
                 onSubmit={handleSearchSubmit}
@@ -185,6 +205,7 @@ function Header({ onDarkModeChange }) {
               </form>
             </div>
 
+            {/* nav links */}
             <nav className="mt-4 border-y border-[#1f1f1f] px-5 py-2">
               {mainMenu.map((item) => (
                 <a
@@ -197,7 +218,6 @@ function Header({ onDarkModeChange }) {
                   {item.label}
                 </a>
               ))}
-
               <a
                 href={headerLinks.wishlist}
                 target="_self"
@@ -206,10 +226,9 @@ function Header({ onDarkModeChange }) {
               >
                 Wishlist
               </a>
-
               <button
                 type="button"
-                onClick={() => setMobileCompanyOpen((prev) => !prev)}
+                onClick={() => setMobileCompanyOpen((p) => !p)}
                 className="flex w-full items-center justify-between py-[11px] text-left text-[18px] font-[700] uppercase tracking-[0.3px]"
               >
                 <span className="text-[#e11]">Company</span>
@@ -219,17 +238,18 @@ function Header({ onDarkModeChange }) {
                   } text-[24px] text-[#cfcfcf]`}
                 />
               </button>
-
               {mobileCompanyOpen && (
                 <div className="border-t border-[#1f1f1f]">
-                  {headerCompanyLinks.map((item, index) => (
+                  {headerCompanyLinks.map((item, i) => (
                     <a
-                      key={`mobile-company-${item.label}`}
+                      key={`mc-${item.label}`}
                       href={item.href}
                       target="_self"
                       rel="noopener noreferrer"
                       className={`block py-[11px] text-[18px] font-[500] uppercase text-white/80 ${
-                        index < headerCompanyLinks.length - 1 ? "border-b border-[#1f1f1f]" : ""
+                        i < headerCompanyLinks.length - 1
+                          ? "border-b border-[#1f1f1f]"
+                          : ""
                       }`}
                     >
                       {item.label}
@@ -239,6 +259,7 @@ function Header({ onDarkModeChange }) {
               )}
             </nav>
 
+            {/* footer */}
             <div className="mt-auto px-5 pb-4">
               <div className="mb-3 flex items-center justify-between">
                 {topSocials.map((item) => (
@@ -250,208 +271,267 @@ function Header({ onDarkModeChange }) {
                     className="text-[24px]"
                   >
                     {item.icon === "fa-whatsapp" ? (
-                      <WhatsAppIcon className={socialIconColors[item.icon] || "text-[#2a2a2a]"} />
+                      <WhatsAppIcon
+                        className={socialIconColors[item.icon] || "text-[#2a2a2a]"}
+                      />
                     ) : (
-                      <i className={`fa-brands ${item.icon} ${socialIconColors[item.icon] || "text-[#2a2a2a]"}`} />
+                      <i
+                        className={`fa-brands ${item.icon} ${
+                          socialIconColors[item.icon] || "text-[#2a2a2a]"
+                        }`}
+                      />
                     )}
                   </a>
                 ))}
               </div>
               <div className="flex items-center justify-between border-t border-[#1f1f1f] pt-3">
                 <p className="text-[15px] text-white/75">{headerMobileCopyrightText}</p>
-                <img src={gdBrandCreativeLogoSrc} alt="Brand Creative" className="h-auto w-[120px]" />
+                <img
+                  src={gdBrandCreativeLogoSrc}
+                  alt="Brand Creative"
+                  className="h-auto w-[120px]"
+                />
               </div>
             </div>
           </aside>
         </div>
       )}
 
-      {/* DESKTOP TOP BAR (always black) */}
-      <div className="hidden bg-black text-white lg:block">
-        <div className="mx-auto flex h-[38px] max-w-[1350px] items-center justify-between px-4">
-          <div className="flex items-center gap-4">
-            {topSocials.map((item) => (
-              <a
-                key={item.icon}
-                href={item.href}
-                target="_self"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center text-[14px] leading-none font-normal text-white hover:text-[#cccccc]"
-              >
-                {item.icon === "fa-whatsapp" ? (
-                  <WhatsAppIcon className="h-[14px] w-[14px]" />
-                ) : (
-                  <i className={`fa-brands ${item.icon}`} />
-                )}
-              </a>
-            ))}
-          </div>
+      {/* ══════════════════════════════════════════════════
+          DESKTOP — static (scrolls away)
+      ══════════════════════════════════════════════════ */}
+      <div className="hidden lg:block">
 
-          <div className="flex items-center gap-5">
-            <form onSubmit={handleSearchSubmit} className="flex items-center gap-3">
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                type="text"
-                placeholder="Search..."
-                className="w-[140px] border-0 bg-transparent text-[14px] text-white outline-none placeholder:text-white/60"
-              />
-              <button type="submit" className="text-white">
-                <i className="fa-solid fa-magnifying-glass text-[14px]" />
-              </button>
-            </form>
+        {/* TOP BAR — ALWAYS bg-[#212121], text-[#F5F5F5] */}
+        <div className="bg-[#212121] transition-colors duration-300">
+          <div className="mx-auto flex h-[48px] max-w-[1350px] items-center justify-between px-6">
 
-            {/* DESKTOP DARK MODE TOGGLE */}
-            <label
-              className="inline-flex cursor-pointer items-center"
-              title={darkMode ? "Dark mode on" : "Dark mode off"}
-            >
-              <input
-                type="checkbox"
-                checked={darkMode}
-                onChange={(e) => handleDarkModeToggle(e.target.checked)}
-                className="sr-only"
-                aria-label={`Dark mode toggle (${darkMode ? "on" : "off"})`}
-              />
-              <span
-                className={`relative h-7 w-12 rounded-full transition-colors duration-300 ${
-                  darkMode ? "bg-[#111827]" : "bg-[#65656a]"
-                }`}
-              >
-                <span
-                  className={`absolute top-[2px] left-[2px] flex h-[24px] w-[24px] items-center justify-center rounded-full bg-[#efefef] transition-transform duration-300 ${
-                    darkMode ? "translate-x-5 text-[#111827]" : "text-[#5b5b5b]"
-                  }`}
+            {/* Social icons */}
+            <div className="flex items-center gap-[18px]">
+              {topSocials.map((item) => (
+                <a
+                  key={item.icon}
+                  href={item.href}
+                  target="_self"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center text-[16px] leading-none text-[#F5F5F5] transition-opacity hover:opacity-60"
                 >
-                  <i
-                    className={`fa-regular ${
-                      darkMode ? "fa-sun text-[#f59e0b]" : "fa-moon text-[#606060]"
-                    } text-[12px]`}
-                  />
-                </span>
-              </span>
-            </label>
+                  {item.icon === "fa-whatsapp" ? (
+                    <WhatsAppIcon className="h-[16px] w-[16px]" />
+                  ) : (
+                    <i className={`fa-brands ${item.icon}`} />
+                  )}
+                </a>
+              ))}
+            </div>
+
+            {/* Search (plain) + toggle */}
+            <div className="flex items-center gap-5">
+              <form onSubmit={handleSearchSubmit} className="flex items-center gap-2">
+                <input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  type="text"
+                  placeholder="Search..."
+                  className="w-[140px] border-0 bg-transparent text-[14px] text-[#F5F5F5] outline-none placeholder:text-[#F5F5F5]/50"
+                />
+                <button
+                  type="submit"
+                  className="text-[#F5F5F5] transition-opacity hover:opacity-60"
+                  aria-label="Search"
+                >
+                  <i className="fa-solid fa-magnifying-glass text-[14px]" />
+                </button>
+              </form>
+              <DarkToggle />
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* DESKTOP MIDDLE (logo + ad) */}
+        {/* MIDDLE: logo + ad banner (no Advertise With Us) */}
+        <div className={`transition-colors duration-300 ${darkMode ? "bg-[#0e0908]" : "bg-white"}`}>
+          <div className="mx-auto grid min-h-[80px] max-w-[1350px] grid-cols-[320px_1fr] items-center gap-6 px-6 py-1">
+            <a href={headerLinks.home} target="_self" rel="noopener noreferrer">
+              <img
+                src={headerLogoSrc}
+                alt="Travel Rethink Ways Logo"
+                className="h-auto w-[250px]"
+              />
+            </a>
+            <div className="flex items-center gap-3 justify-end">
+              <span className={`text-[7px] tracking-[2px] [writing-mode:vertical-rl] [transform:rotate(180deg)] ${darkMode ? "text-white/40" : "text-black/40"}`}>
+                SPONSORED AD
+              </span>
+              <a
+                href={currentHeaderAd.href}
+                target="_self"
+                rel="noopener noreferrer"
+                aria-label={currentHeaderAd.ariaLabel}
+              >
+                <img
+                  src={currentHeaderAd.image}
+                  alt={currentHeaderAd.alt}
+                  className="h-[110px] w-[900px] max-w-full rounded-xl object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      {/* /desktop static */}
+
+      {/* ══════════════════════════════════════════════════════════════
+          DESKTOP — STICKY NAV
+      ══════════════════════════════════════════════════════════════ */}
       <div
-        className={`trw-desktop-middle hidden lg:block transition-colors duration-300 ${
-          darkMode ? "bg-[#0e0908]" : "bg-white"
+        className={`sticky top-0 z-50 hidden lg:block transition-colors duration-300 [font-family:Poppins,sans-serif] ${
+          scrolled
+            ? darkMode
+              ? "bg-[#1a1a1a]"
+              : "bg-white shadow-[0_2px_12px_rgba(0,0,0,0.08)] border-b border-[#e5e5e5]"
+            : "bg-[#212121]"
         }`}
       >
-        <div className="mx-auto grid min-h-[170px] max-w-[1350px] grid-cols-1 items-center gap-6 px-4 py-6 lg:grid-cols-[320px_1fr]">
-          <a
-            href={headerLinks.home}
-            target="_self"
-            rel="noopener noreferrer"
-            className="self-center justify-self-center lg:justify-self-start"
-          >
-            <img src={headerLogoSrc} alt="Travel Rethink Ways Logo" className="h-auto w-[250px]" />
-          </a>
+        <div className="mx-auto max-w-[1350px] px-4">
+          <div className="flex h-[54px] items-center">
 
-          <div className="flex self-center justify-end">
-            <div className="flex flex-col items-end">
-              <div className="flex items-center justify-end gap-3">
-                <span
-                  className={`text-[7px] tracking-[2px] ${
-                    darkMode ? "text-white/45" : "text-black/45"
-                  } [writing-mode:vertical-rl] [transform:rotate(180deg)]`}
-                >
-                  SPONSORED AD
-                </span>
+            {/* Logo — slides in on scroll, correct variant per mode */}
+            <div
+              style={{
+                width: scrolled ? "148px" : "0px",
+                opacity: scrolled ? 1 : 0,
+                marginRight: scrolled ? "16px" : "0px",
+                flexShrink: 0,
+                overflow: "hidden",
+                transition: "width 300ms ease, opacity 300ms ease, margin 300ms ease",
+              }}
+            >
+              <a href={headerLinks.home} target="_self" rel="noopener noreferrer">
+                <img
+                  src={darkMode ? darkLogoSrc : lightLogoSrc}
+                  alt="Travel Rethink Ways Logo"
+                  className="h-auto w-[128px] object-contain"
+                />
+              </a>
+            </div>
+
+            {/* Nav links */}
+            <nav className="flex flex-1 items-center justify-between">
+              {mainMenu.map((item) => (
                 <a
-                  href={currentHeaderAd.href}
+                  key={item.label}
+                  href={item.href}
                   target="_self"
                   rel="noopener noreferrer"
-                  aria-label={currentHeaderAd.ariaLabel}
-                >
-                  <img
-                    src={currentHeaderAd.image}
-                    alt={currentHeaderAd.alt}
-                    className="h-[110px] w-[900px] max-w-full rounded-xl object-cover"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </a>
-              </div>
-              <div className="mt-2 w-[900px] max-w-full text-center">
-                <a
-                  href={headerLinks.advertiseWithUs}
-                  target="_self"
-                  rel="noopener noreferrer"
-                  className={`inline-flex items-center gap-1 text-[14px] font-medium transition-colors ${
-                    darkMode ? "text-white hover:text-white/80" : "text-black hover:text-[#666]"
+                  className={`px-4 py-[18px] text-[13px] font-medium uppercase tracking-[0.5px] [font-family:Poppins,Helvetica,Arial,sans-serif] whitespace-nowrap transition-colors ${
+                    scrolled && !darkMode
+                      ? "text-[#222] hover:bg-[#f5f5f5]"
+                      : "text-white hover:bg-[#2e2e2e]"
                   }`}
                 >
-                  Advertise With Us
-                  <i className="fa-solid fa-chevron-right text-[13px]" aria-hidden="true" />
+                  {item.label}
                 </a>
+              ))}
+
+              <a
+                href={headerLinks.wishlist}
+                target="_self"
+                rel="noopener noreferrer"
+                className={`flex items-center gap-1.5 px-4 py-[18px] text-[13px] font-medium uppercase tracking-[0.5px] [font-family:Poppins,Helvetica,Arial,sans-serif] whitespace-nowrap transition-colors ${
+                  scrolled && !darkMode
+                    ? "text-[#222] hover:bg-[#f5f5f5]"
+                    : "text-white hover:bg-[#2e2e2e]"
+                }`}
+              >
+                <i className="fa-solid fa-heart text-[#f70d28]" />
+                Wishlist
+              </a>
+
+              {/* Company dropdown */}
+              <div className="group relative">
+                <button
+                  className={`flex items-center gap-1 px-4 py-[18px] text-[13px] font-medium uppercase tracking-[0.5px] [font-family:Poppins,Helvetica,Arial,sans-serif] whitespace-nowrap transition-colors ${
+                    scrolled && !darkMode
+                      ? "text-[#222] hover:bg-[#f5f5f5]"
+                      : "text-white hover:bg-[#2e2e2e]"
+                  }`}
+                >
+                  Company
+                  <i className="fa-solid fa-angle-down text-[11px]" />
+                </button>
+                <div className="invisible absolute right-0 z-[60] mt-0 min-w-[200px] shadow-xl opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 bg-white text-black">
+                  {headerCompanyLinks.map((item, i) => (
+                    <a
+                      key={`dc-${item.label}`}
+                      href={item.href}
+                      target="_self"
+                      rel="noopener noreferrer"
+                      className={`flex items-center gap-3 px-5 py-[14px] text-[13px] text-black hover:bg-[#f5f5f5] ${
+                        i < headerCompanyLinks.length - 1 ? "border-b border-[#eee]" : ""
+                      }`}
+                    >
+                      <i className={`fa-solid ${item.icon} text-[13px]`} />
+                      {item.label}
+                    </a>
+                  ))}
+                </div>
               </div>
+            </nav>
+
+            {/* Search pill + toggle — fade in on scroll */}
+            <div
+              style={{
+                opacity: scrolled ? 1 : 0,
+                width: scrolled ? "auto" : "0px",
+                marginLeft: scrolled ? "16px" : "0px",
+                pointerEvents: scrolled ? "auto" : "none",
+                flexShrink: 0,
+                overflow: "hidden",
+                transition: "width 300ms ease, opacity 300ms ease, margin 300ms ease",
+              }}
+              className="flex items-center gap-3"
+            >
+              <form
+                onSubmit={handleSearchSubmit}
+                className={`flex h-[34px] items-center gap-2 rounded-full border px-4 ${
+                  scrolled && !darkMode
+                    ? "border-[#ddd] bg-[#f5f5f5]"
+                    : "border-[#444] bg-[#111]"
+                }`}
+              >
+                <input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  type="text"
+                  placeholder="Search..."
+                  className={`w-[120px] border-0 bg-transparent text-[13px] outline-none ${
+                    scrolled && !darkMode
+                      ? "text-[#222] placeholder:text-[#999]"
+                      : "text-white placeholder:text-white/40"
+                  }`}
+                />
+                <button
+                  type="submit"
+                  className={`transition-colors ${
+                    scrolled && !darkMode
+                      ? "text-[#555] hover:text-[#111]"
+                      : "text-white/70 hover:text-white"
+                  }`}
+                  aria-label="Search"
+                >
+                  <i className="fa-solid fa-magnifying-glass text-[12px]" />
+                </button>
+              </form>
+              <DarkToggle size="sm" />
             </div>
+
           </div>
         </div>
       </div>
-
-      {/* DESKTOP NAV (always black) */}
-      <div className="sticky top-0 z-40 hidden bg-black text-white lg:block">
-        <div className="mx-auto max-w-[1350px] px-4">
-          <nav className="float-none flex flex-wrap items-start justify-between md:flex-nowrap">
-            {mainMenu.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                target="_self"
-                rel="noopener noreferrer"
-                className="px-6 py-4 text-[14px] font-medium uppercase tracking-[0.4px] text-[#f5f5f5] [font-family:Poppins,Helvetica,Arial,sans-serif] hover:bg-[#3a3a3d]"
-              >
-                {item.label}
-              </a>
-            ))}
-
-            <a
-              href={headerLinks.wishlist}
-              target="_self"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-6 py-4 text-[14px] font-medium uppercase text-[#f5f5f5] [font-family:Poppins,Helvetica,Arial,sans-serif] hover:bg-[#3a3a3d]"
-            >
-              <i className="fa-solid fa-heart text-[#f70d28]" />
-              Wishlist
-            </a>
-
-            <div className="group relative">
-              <button className="flex min-w-[180px] items-center justify-center gap-1 px-6 py-4 text-[14px] font-medium uppercase text-[#f5f5f5] [font-family:Poppins,Helvetica,Arial,sans-serif] hover:bg-[#3a3a3d]">
-                Company
-                <i className="fa-solid fa-angle-down text-[14px]" />
-              </button>
-              <div
-                className={`invisible absolute right-0 z-50 mt-0 w-full shadow-lg opacity-0 transition-all group-hover:visible group-hover:opacity-100 ${
-                  darkMode ? "bg-[#1a1a1a] text-white" : "bg-white text-black"
-                }`}
-              >
-                {headerCompanyLinks.map((item, index) => (
-                  <a
-                    key={`desktop-company-${item.label}`}
-                    href={item.href}
-                    target="_self"
-                    rel="noopener noreferrer"
-                    className={`flex items-center gap-3 px-5 py-4 text-[14px] ${
-                      darkMode
-                        ? "hover:bg-[#2a2a2a] text-white border-[#2a2a2a]"
-                        : "hover:bg-[#dfdfdf] text-black border-[#d7d7d7]"
-                    } ${index < headerCompanyLinks.length - 1 ? "border-b" : ""}`}
-                  >
-                    <i className={`fa-solid ${item.icon} text-[14px]`} />
-                    {item.label}
-                  </a>
-                ))}
-              </div>
-            </div>
-          </nav>
-        </div>
-      </div>
-    </header>
+    </>
   );
 }
 

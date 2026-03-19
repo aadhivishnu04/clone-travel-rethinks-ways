@@ -13,7 +13,7 @@ const tagLink = "https://travel.rethinkways.com/category/brand-story/";
 
 return (
 
-<section className="w-full md:max-w-[1320px] mx-auto px-0 md:px-4">
+<section className="w-full md:max-w-[1500px] mx-auto px-0 md:px-4">
 
   {/* Header */}
   <div className="flex items-center justify-between mb-6 md:mb-10">

@@ -45,7 +45,7 @@ const Card = ({ item, imgClass }) => (
 export default function AroundWorld({ darkMode }) {
   return (
     <section className="w-full mb-6">
-      <div className="max-w-[1320px] mx-auto px-4">
+      <div className="max-w-[1500px] mx-auto px-4">
 
         {/* HEADER */}
         <div className="flex justify-between items-center mb-6">

@@ -12,7 +12,7 @@ export default function VisaProcess({ darkMode }) {
   const tagLink = "https://travel.rethinkways.com/category/visa-process/";
 
   return (
-    <section className="w-full md:max-w-[1320px] mx-auto mb-6 px-0 md:px-4">
+    <section className="w-full md:max-w-[1500px] mx-auto mb-6 px-0 md:px-4">
 
       {/* HEADER */}
       <div className="flex items-center justify-between mb-6">
