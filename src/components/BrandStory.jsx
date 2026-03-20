@@ -1,7 +1,7 @@
 import { useState } from "react";
-import brandImage from "../assets/brandstory@.jpg";
-import brandImageMobile from "../assets/mobile.jpeg";
-import arrow from "../assets/Travel_arrow.svg";
+import brandImage from "../assets/rethink-ways-brandstory.jpg";
+import brandImageMobile from "../assets/rethink-ways-mobile.jpeg";
+import arrow from "../assets/rethink-ways-travel-arrow.svg";
 import { FaRegBookmark, FaBookmark } from "react-icons/fa";
 
 export default function BrandStory({ darkMode }) {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaRegBookmark, FaBookmark } from "react-icons/fa";
-import arrow from "../assets/Travel_arrow.svg";
-import img from "../assets/rethinkways-serbia-visa-1140x570.jpg";
+import arrow from "../assets/rethink-ways-travel-arrow.svg";
+import img from "../assets/rethinkways-serbia-visa.jpg";
 
 export default function VisaProcess({ darkMode }) {
   const [bookmark, setBookmark] = useState(false);

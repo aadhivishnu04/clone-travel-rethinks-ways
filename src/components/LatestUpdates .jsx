@@ -51,11 +51,13 @@ const TagBadge = ({ tag, tagLink }) => (
 const BookmarkBtn = ({ id, bookmarks, toggle }) => (
   <button
     onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(id); }}
-    className="absolute top-3 right-3 w-[34px] h-[34px] flex items-center justify-center rounded-full z-20 shadow-md bg-white/90"
+    className={`absolute top-3 right-3 w-[34px] h-[34px] flex items-center justify-center rounded-full z-20 shadow-md transition-colors duration-300 ${
+      bookmarks[id] ? "bg-[#D02525]" : "bg-white/90"
+    }`}
     style={{ backdropFilter: "blur(6px)" }}
   >
     {bookmarks[id]
-      ? <FaBookmark className="text-[#D02525] text-[13px]" />
+      ? <FaBookmark className="text-white text-[13px]" />
       : <FaRegBookmark className="text-[#D02525] text-[13px]" />}
   </button>
 );
@@ -75,7 +77,7 @@ const ExpandBtn = ({ href }) => (
 );
 
 const MobileBtn = ({ href }) => (
-  <div className="flex justify-center mt-3">
+  <div className="flex mt-3">
     <a
       href={href}
       className="relative flex items-center h-[44px] w-fit rounded-full bg-[#D02525] text-white overflow-hidden pr-5"
@@ -137,10 +139,13 @@ export default function LatestUpdates({ darkMode = false }) {
             <BookmarkBtn id="featured" bookmarks={bookmarks} toggle={toggle} />
             <img src={posts[0].image} alt={posts[0].title} className="w-full h-[220px] object-cover rounded-xl" />
           </a>
+          <a href={posts[0].tagLink}>
+            <span className="inline-block text-[10px] font-bold uppercase tracking-[2px] text-[#D02525] mb-2" style={{ fontFamily: "Poppins, sans-serif" }}>{posts[0].tag}</span>
+          </a>
           <a href={posts[0].link}>
             <h3 className={`text-[19px] leading-[1.3] mb-2 hover:text-[#D02525] transition-colors ${titleCol}`} style={{ fontFamily: "'Yeseva One', Georgia, serif" }}>{posts[0].title}</h3>
           </a>
-          <p className={`text-[13px] leading-[1.7] mb-2 line-clamp-2 ${descCol}`} style={{ fontFamily: "Poppins, sans-serif" }}>{posts[0].desc}</p>
+          <p className={`text-[13px] leading-[1.7] mb-2 ${descCol}`} style={{ fontFamily: "Poppins, sans-serif" }}>{posts[0].desc}</p>
           <MobileBtn href={posts[0].link} />
         </div>
         <div className="flex flex-col gap-6">
@@ -151,6 +156,9 @@ export default function LatestUpdates({ darkMode = false }) {
                 <BookmarkBtn id={i} bookmarks={bookmarks} toggle={toggle} />
                 <img src={post.image} alt={post.title} className="w-full h-[180px] object-cover rounded-xl" />
               </a>
+              <a href={post.tagLink}>
+                <span className="inline-block text-[10px] font-bold uppercase tracking-[2px] text-[#D02525] mb-1" style={{ fontFamily: "Poppins, sans-serif" }}>{post.tag}</span>
+              </a>
               <a href={post.link}>
                 <h4 className={`text-[16px] leading-[1.3] mb-2 hover:text-[#D02525] transition-colors ${titleCol}`} style={{ fontFamily: "'Yeseva One', Georgia, serif" }}>{post.title}</h4>
               </a>
@@ -160,18 +168,27 @@ export default function LatestUpdates({ darkMode = false }) {
         </div>
       </div>
 
-      {/* ══════════════ DESKTOP ══════════════ */}
-      <div className={`hidden md:flex md:flex-col w-full h-screen overflow-hidden ${bg}`}>
-        <div className="w-full max-w-[1500px] mx-auto px-6 py-5 flex flex-col flex-1 min-h-0">
+      {/* ══════════════════════════════════════════
+          DESKTOP LAYOUT
+          ════════════════════════════════════════
+
+          gridTemplateColumns: 1fr | 1fr | 1.33fr
+                               col1  col2   col3
+
+          ROW 1: [ BIG CARD IMAGE col1+col2 (~60%) ] [ CONTENT BOX col3 (~40%) ]
+          ROW 2: [ CARD 1 col1   ] [ CARD 2 col2  ] [ CARD 3      col3         ]
+                  ↑ card1+card2 width = big card width
+                                                       ↑ card3 width = content box width
+      ══════════════════════════════════════════ */}
+      <div className={`hidden md:block w-full ${bg}`}>
+        <div className="w-full max-w-[1500px] mx-auto px-6 py-5">
           <Header />
 
           <div
             className="grid gap-5"
             style={{
               gridTemplateColumns: "1fr 1fr 1fr",
-              gridTemplateRows: "500px 330px",
-              flex: 1,
-              minHeight: 0,
+              gridTemplateRows: "360px auto",
             }}
           >
 
@@ -179,7 +196,7 @@ export default function LatestUpdates({ darkMode = false }) {
             <a
               href={posts[0].link}
               className="relative block overflow-hidden rounded-2xl"
-              style={{ gridColumn: "1 / 3", gridRow: "1 / 2", minHeight: 0 }}
+            style={{ gridColumn: "1 / 3", gridRow: "1 / 2" }}
             >
               <TagBadge tag={posts[0].tag} tagLink={posts[0].tagLink} />
               <BookmarkBtn id="featured" bookmarks={bookmarks} toggle={toggle} />
@@ -192,69 +209,78 @@ export default function LatestUpdates({ darkMode = false }) {
 
             {/* ── ROW 1 · COL 3 · CONTENT BOX ── */}
             <div
-              className={`group rounded-2xl p-6 flex flex-col justify-center overflow-hidden`}
-              style={{ gridColumn: "3 / 4", gridRow: "1 / 2", minHeight: 0 }}
+              className={`rounded-2xl border ${divider} p-6 flex flex-col justify-center`}
+              style={{ gridColumn: "3 / 4", gridRow: "1 / 2" }}
             >
+              <a href={posts[0].tagLink}>
+                <span className="inline-block text-[10px] font-bold uppercase tracking-[2px] text-[#D02525] mb-3" style={{ fontFamily: "Poppins, sans-serif" }}>
+                  {posts[0].tag}
+                </span>
+              </a>
               <a href={posts[0].link}>
-                <h3 className={`text-[18px] lg:text-[30px] leading-[1.35] mb-3 hover:text-[#D02525] transition-colors ${titleCol}`} style={{ fontFamily: "'Yeseva One', Georgia, serif" }}>
+                <h3 className={`text-[18px] lg:text-[22px] leading-[1.35] mb-3 hover:text-[#D02525] transition-colors ${titleCol}`} style={{ fontFamily: "'Yeseva One', Georgia, serif" }}>
                   {posts[0].title}
                 </h3>
               </a>
-              <p className={`text-[20px] leading-[1.7] mb-5 line-clamp-5 ${descCol}`} style={{ fontFamily: "Poppins, sans-serif" }}>
+              <p className={`text-[13px] leading-[1.7] mb-5 line-clamp-5 ${descCol}`} style={{ fontFamily: "Poppins, sans-serif" }}>
                 {posts[0].desc}
               </p>
-              <div className="flex justify-end">
+              <div className="group flex">
                 <ExpandBtn href={posts[0].link} />
               </div>
             </div>
 
-            {/* ── ROW 2 · ALL 3 CARDS ── */}
-            <div
-              className="flex gap-5"
-              style={{ gridColumn: "1 / 4", gridRow: "2 / 3", minHeight: 0 }}
-            >
-              {[
-                { post: posts[1], bmId: 0 },
-                { post: posts[2], bmId: 1 },
-                { post: posts[3], bmId: 2 },
-              ].map(({ post, bmId }) => (
-                <div
-                  key={bmId}
-                  className="group relative overflow-hidden rounded-xl flex-1"
-                  style={{ minHeight: 0 }}
-                >
-                  {/* background image */}
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="absolute inset-0 w-full h-full object-cover rounded-xl"
-                  />
+            {/* ── ROW 2 · CARDS 1, 2, 3 — content + button overlaid INSIDE image ── */}
+            {[
+              { post: posts[1], col: "1 / 2", bmId: 0 },
+              { post: posts[2], col: "2 / 3", bmId: 1 },
+              { post: posts[3], col: "3 / 4", bmId: 2 },
+            ].map(({ post, col, bmId }) => (
+              <div
+                key={col}
+                className="group relative overflow-hidden rounded-xl"
+                style={{ gridColumn: col, gridRow: "2 / 3", height: "260px" }}
+              >
+                {/* background image */}
+                <img
+                  src={post.image}
+                  alt={post.title}
+                  className="absolute inset-0 w-full h-full object-cover rounded-xl transition-transform duration-700 group-hover:scale-105"
+                />
 
-                  {/* dark gradient overlay */}
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                {/* dark gradient overlay — stronger at bottom */}
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
-                  {/* tag badge top-left */}
-                  <TagBadge tag={post.tag} tagLink={post.tagLink} />
+                {/* tag badge top-left */}
+                <TagBadge tag={post.tag} tagLink={post.tagLink} />
 
-                  {/* bookmark top-right */}
-                  <BookmarkBtn id={bmId} bookmarks={bookmarks} toggle={toggle} />
+                {/* bookmark top-right */}
+                <BookmarkBtn id={bmId} bookmarks={bookmarks} toggle={toggle} />
 
-                  {/* title then button stacked vertically, pinned to bottom */}
-                  <div className="absolute bottom-0 left-0 right-0 p-4 flex flex-col gap-3 items-end">
-                    <a href={post.link}>
-                      <h4
-                        className="text-white text-[14px] lg:text-[20px] leading-[1.3] line-clamp-2 hover:text-[#D02525] transition-colors"
-                        style={{ fontFamily: "'Yeseva One', Georgia, serif" }}
-                      >
-                        {post.title}
-                      </h4>
-                    </a>
-                    {/* button below title */}
+                {/* content + button pinned to bottom */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 flex flex-col gap-2">
+                  <a href={post.tagLink}>
+                    <span
+                      className="inline-block text-[9px] font-bold uppercase tracking-[2px] text-[#ff6b6b]"
+                      style={{ fontFamily: "Poppins, sans-serif" }}
+                    >
+                      {post.tag}
+                    </span>
+                  </a>
+                  <a href={post.link}>
+                    <h4
+                      className="text-white text-[14px] lg:text-[16px] leading-[1.3] line-clamp-2 hover:text-[#D02525] transition-colors"
+                      style={{ fontFamily: "'Yeseva One', Georgia, serif" }}
+                    >
+                      {post.title}
+                    </h4>
+                  </a>
+                  <div className="group flex pt-1">
                     <ExpandBtn href={post.link} />
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
 
           </div>
         </div>

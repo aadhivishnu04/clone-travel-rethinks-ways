@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { FaRegBookmark, FaBookmark } from "react-icons/fa";
-import arrow from "../assets/Travel_arrow.svg";
+import arrow from "../assets/rethink-ways-travel-arrow.svg";
 
-import card1 from "../assets/card1.webp";
-import card2 from "../assets/card2.webp";
-import card3 from "../assets/card3.webp";
-import card4 from "../assets/card4.jpg";
-import card5 from "../assets/card5.webp";
-import card6 from "../assets/card6.jpg";
+import card1 from "../assets/rethink-ways-bali-honeymoon.webp";
+import card2 from "../assets/rethink-ways-valentine's-travel.webp";
+import card3 from "../assets/rethink-ways-maldives-honeymoon.webp";
+import card4 from "../assets/rethink-ways-best-honeymoon.jpg";
+import card5 from "../assets/rethink-ways-love-in-every.webp";
+import card6 from "../assets/rethink-ways-india's-enchannting.jpg";
 
 const sections = [
 {

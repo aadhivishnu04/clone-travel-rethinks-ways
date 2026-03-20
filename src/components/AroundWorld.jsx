@@ -1,11 +1,11 @@
-import asia from "../assets/ASIA.svg";
-import europe from "../assets/EUROPE.svg";
-import africa from "../assets/AFRICA.svg";
-import north from "../assets/NORTH AMERICA.svg";
-import south from "../assets/SOUTH AMERICA.svg";
-import oceania from "../assets/OCEANIA.svg";
-import antarctica from "../assets/ANTARCTICA.svg";
-import arrow from "../assets/Travel_arrow.svg";
+import asia from "../assets/rethink-ways-asia.svg";
+import europe from "../assets/rethink-ways-europe.svg";
+import africa from "../assets/rethink-ways-africa.svg";
+import north from "../assets/rethink-ways-north-america.svg";
+import south from "../assets/rethink-ways-south-america.svg";
+import oceania from "../assets/rethink-ways-oceania.svg";
+import antarctica from "../assets/rethink-ways-antarctica.svg";
+import arrow from "../assets/rethink-ways-travel-arrow.svg";
 
 const data = [
   { title: "ASIA", img: asia, color: "#66c5cc", link: "https://travel.rethinkways.com/category/asia/" },

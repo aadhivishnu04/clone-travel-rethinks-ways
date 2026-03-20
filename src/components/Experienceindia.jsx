@@ -1,6 +1,6 @@
 import { useState } from "react";
-import indiaImage from "../assets/india.jpg";
-import arrow from "../assets/Travel_arrow.svg";
+import indiaImage from "../assets/rethink-ways-india.jpg";
+import arrow from "../assets/rethink-ways-travel-arrow.svg";
 import { FaRegBookmark, FaBookmark } from "react-icons/fa";
 
 export default function ExperienceIndia({ darkMode }) {
